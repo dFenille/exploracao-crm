@@ -1,0 +1,89 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Conversa
+ *
+ * @ORM\Table(name="Conversa", indexes={@ORM\Index(name="id_mention", columns={"id_mention"}), @ORM\Index(name="idUser", columns={"idUser"}), @ORM\Index(name="dt_coleta", columns={"dt_coleta"}), @ORM\Index(name="dt_process", columns={"dt_process"}), @ORM\Index(name="TipoConversa", columns={"tipoConversa"})})
+ * @ORM\Entity
+ */
+class Conversa
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_conversa", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idConversa;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="parent_id", type="bigint", nullable=true)
+     */
+    private $parentId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_mention", type="bigint", nullable=true)
+     */
+    private $idMention;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idUser", type="bigint", nullable=true)
+     */
+    private $iduser;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idCanal", type="integer", nullable=true)
+     */
+    private $idcanal;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dt_coleta", type="datetime", nullable=true)
+     */
+    private $dtColeta;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ticket_id", type="bigint", nullable=true)
+     */
+    private $ticketId;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dt_process", type="datetime", nullable=true)
+     */
+    private $dtProcess;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="tipoConversa", type="smallint", nullable=true)
+     */
+    private $tipoconversa;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="smallint", nullable=true)
+     */
+    private $status;
+
+
+}
+

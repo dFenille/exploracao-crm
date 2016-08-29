@@ -1,0 +1,68 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Temporeacao
+ *
+ * @ORM\Table(name="TempoReacao", indexes={@ORM\Index(name="id_conversa", columns={"id_conversa"}), @ORM\Index(name="id_canal", columns={"id_Canal"})})
+ * @ORM\Entity
+ */
+class Temporeacao
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_tempoReacao", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idTemporeacao;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_Canal", type="integer", nullable=true)
+     */
+    private $idCanal;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_conversa", type="integer", nullable=true)
+     */
+    private $idConversa;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_post", type="bigint", nullable=true)
+     */
+    private $idPost;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="tempo_minutos_brutos", type="bigint", nullable=true)
+     */
+    private $tempoMinutosBrutos;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="tempo_horas_uteis", type="bigint", nullable=true)
+     */
+    private $tempoHorasUteis;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="faixa_hh_uteis", type="string", length=10, nullable=true)
+     */
+    private $faixaHhUteis;
+
+
+}
+

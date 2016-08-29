@@ -1,0 +1,53 @@
+.top-nav {
+    margin-top:20px;
+}
+.top-nav img {
+    border-radius:50%;
+    -webkit-border-radius:50%;
+    width:33px;
+}
+.top-nav .icon-user i {
+    height: 33px;
+    width:33px;
+    line-height: 33px;
+    display: inline-block;
+    font-size: 1.7em;
+    padding-left: 10px;
+}
+
+.top-nav .icon-user .username {
+    color: #555555;
+    font-size: 13px;
+    position: relative;
+    top: -5px;
+}
+
+.top-nav .icon-user .caret {
+    position: relative;
+    top: -4px;
+}
+
+.top-nav ul.top-menu>li .dropdown-menu.logout {
+    width:170px !important;
+}
+.top-nav li.dropdown .dropdown-menu {
+    float:right;
+    right:0;
+    left:auto;
+}
+
+@media (max-width: 479px) {
+    .top-nav{
+        margin-bottom: 20px;
+    }
+    .hr-top-nav {
+        display: inline-block;
+        float: right;
+        margin: 10px 0;
+    }
+}
+
+ul.top-menu {
+    margin-right: 15px;
+    margin-top: 0;
+}

@@ -1,0 +1,51 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle('PV - '. $this->translate('Página Viva CRM'))->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+            ->prependStylesheet($this->basePath('css/style.css'))
+
+            ->prependStylesheet($this->basePath('assets/layouts/layout4/css/custom.min.css'))
+                        ->prependStylesheet($this->basePath('assets/layouts/layout4/css/themes/light.min.css'))
+                        ->prependStylesheet($this->basePath('assets/layouts/layout4/css/layout.min.css'))
+                        ->prependStylesheet($this->basePath('assets/global/css/plugins.min.css'))
+                        ->prependStylesheet($this->basePath('assets/global/css/components.min.css'))
+                        ->prependStylesheet($this->basePath('assets/global/plugins/jqvmap/jqvmap/jqvmap.css'))
+                        ->prependStylesheet($this->basePath('assets/global/plugins/morris/morris.css'))
+                        ->prependStylesheet($this->basePath('assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css'))
+                        ->prependStylesheet($this->basePath('assets/global/plugins/uniform/css/uniform.default.css'))
+                        ->prependStylesheet($this->basePath('assets/global/plugins/bootstrap/css/bootstrap.min.css'))
+                        ->prependStylesheet($this->basePath('assets/global/plugins/simple-line-icons/simple-line-icons.min.css'))
+                        ->prependStylesheet($this->basePath('assets/global/plugins/font-awesome/css/font-awesome.min.css')) ?>
+
+        <!-- Scripts -->
+        <?php echo $this->headScript()
+            ->prependFile($this->basePath('js/bootstrap.min.js'))
+            ->prependFile($this->basePath('js/jquery.mask.js'))
+            ->prependFile($this->basePath('js/jquery.min.js'))
+            ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+            ->prependFile($this->basePath('js/html5shiv.min.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
+        ; ?>
+        <style type="text/css">.dropdown-submenu:hover>.dropdown-menu{display:none}</style>
+    </head>
+    <body class="page-container-bg-solid  page-sidebar-closed-hide-logo">
+         <div class="page-container">
+
+            <?php echo $this->content; ?>
+            <hr>
+            <footer>
+                <p>&copy;<?php echo date('Y') ?> by Página Viva CRM. <?php echo $this->translate('Todos os direitos reservados.') ?></p>
+            </footer>
+        </div> <!-- /container -->
+        <?php echo $this->inlineScript() ?>
+    </body>
+</html>

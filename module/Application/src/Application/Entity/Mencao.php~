@@ -1,0 +1,117 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Mencao
+ *
+ * @ORM\Table(name="mencao", indexes={@ORM\Index(name="parent_id", columns={"parent_id"}), @ORM\Index(name="id_mention", columns={"id_mention"}), @ORM\Index(name="sentimento", columns={"sentimento"}), @ORM\Index(name="dt_envio", columns={"dt_envio"}), @ORM\Index(name="tipo_captura", columns={"tipo_captura"})})
+ * @ORM\Entity
+ */
+class Mencao
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_mencao", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idMencao;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_mention", type="bigint", nullable=false)
+     */
+    private $idMention;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_monitoring", type="integer", nullable=true)
+     */
+    private $idMonitoring;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="parent_id", type="bigint", nullable=true)
+     */
+    private $parentId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_usuario_facebook", type="integer", nullable=true)
+     */
+    private $idUsuarioFacebook;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_usuario_instagram", type="integer", nullable=true)
+     */
+    private $idUsuarioInstagram;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mensagem", type="string", length=3000, nullable=true)
+     */
+    private $mensagem;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sentimento", type="string", length=50, nullable=true)
+     */
+    private $sentimento;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dt_envio", type="datetime", nullable=true)
+     */
+    private $dtEnvio;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dt_coleta_scup", type="datetime", nullable=true)
+     */
+    private $dtColetaScup;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipo_captura", type="string", length=50, nullable=true)
+     */
+    private $tipoCaptura;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="permalink", type="string", length=300, nullable=true)
+     */
+    private $permalink;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dt_process", type="datetime", nullable=true)
+     */
+    private $dtProcess;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="cod_mens", type="integer", nullable=true)
+     */
+    private $codMens;
+
+
+}
+

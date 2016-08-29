@@ -1,0 +1,40 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TabFaixasTempoAtendimento
+ *
+ * @ORM\Table(name="tab_faixas_tempo_atendimento")
+ * @ORM\Entity
+ */
+class TabFaixasTempoAtendimento
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_faixa", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idFaixa;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lim_inf_hh", type="decimal", precision=8, scale=2, nullable=false)
+     */
+    private $limInfHh;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lim_sup_hh", type="decimal", precision=8, scale=2, nullable=false)
+     */
+    private $limSupHh;
+
+
+}
+

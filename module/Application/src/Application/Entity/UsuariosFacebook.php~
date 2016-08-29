@@ -1,0 +1,75 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * UsuariosFacebook
+ *
+ * @ORM\Table(name="usuarios_facebook")
+ * @ORM\Entity
+ */
+class UsuariosFacebook
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_usuarios_facebook", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idUsuariosFacebook;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_facebook", type="bigint", nullable=true)
+     */
+    private $idFacebook;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="foto_usuario", type="string", length=0, nullable=true)
+     */
+    private $fotoUsuario;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nome", type="string", length=70, nullable=true)
+     */
+    private $nome;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=100, nullable=true)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="documento", type="string", length=100, nullable=true)
+     */
+    private $documento;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descricao", type="string", length=200, nullable=true)
+     */
+    private $descricao;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="localizacao", type="string", length=100, nullable=true)
+     */
+    private $localizacao;
+
+
+}
+

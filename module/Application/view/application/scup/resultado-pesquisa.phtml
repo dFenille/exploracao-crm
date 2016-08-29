@@ -1,0 +1,59 @@
+<div class="portlet light">
+    <i style="font-size: 11px">Localizados: <b><?php echo $totalConversas[0]['totalConversas']?> conversas</b> </i>
+    <?php $idconversa = 0;?>
+    <?php $hidden = false; ?>
+    <?php foreach ($conversas as $values):?>
+        <?php if($idconversa == $values['id_conversa']): ?>
+            <?php $hidden = true; ?>
+        <?php else: ?>
+            <?php $idconversa = $values['id_conversa']; ?>
+            <?php $hidden = false; ?>
+        <?php endif;?>
+
+        <hr>
+        <div class="row">
+
+            <div class="col-md-2 <?php echo (empty($values['post']) && $hidden == true)?'col-md-offset-2':(($hidden==true)?'col-md-offset-1':'')?>">
+
+                <?php echo $this->mentions()->getTipoCanal($values['canal'],$this->basePath());?>
+                <img src="<?php echo $values['foto_perfil'] ?>" class="<?php echo (!empty($values['post']) && $hidden == true)?'img-profile-resposta':'img-responsive margin-left-img-profile';?>">
+                <h3 style="margin-left: 15px;"  <?php  echo ($hidden == true)?'class="hidden"':''?>><?php echo $idconversa ?></h3>
+                <?php if(!empty($values['post'])): ?>
+                    <div class="row" style="margin: 10px 10px;">
+                        <a href="<?php echo $values['permalink']?>" target="_blank" class="btn btn-light-grey btn-sm-custom">Ver</a>
+                    </div>
+                    <div class="row" style="margin-left: 10px;">
+                        <button type="button" class="btn btn-light-grey btn-sm-custom"  data-toggle="modal" href="#basic">Avaliar</button>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="col-xs-12 col-sm-8 <?php echo (empty($values['post']) && $hidden == true)?'col-md-8':(($hidden==true)?'col-md-9' :'col-md-10')?>">
+                <?php if(!empty($values['post']) && $hidden == false): ?>
+                    <button type="button" class="btn btn-light-blue btn-sm-custom">Elogio produto</button>
+                    <button type="button" class="btn btn-light-blue btn-sm-custom">Dúvida produto</button>
+                    <div class="pull-right">
+                        <div class="display-inline"> <?php echo ($values['sentimento']== 'positive')?"<img src='{$this->basePath('img/happy.png')}'  style='width: 35px height: 35px;'>":"<img src='{$this->basePath('img/happy.png')}' style='width: 20px; height: 20px;'>"?></div>
+                        <div class="display-inline"> <?php echo ($values['sentimento']== 'neutral')?"<img src='{$this->basePath('img/sceptic.png')}'  style='width: 35px; height: 35px;'>":"<img src='{$this->basePath('img/sceptic.png')}' style='width: 20px; height: 20px;'>"?></div>
+                        <div class="display-inline"> <?php echo ($values['sentimento']== 'negative')?"<img src='{$this->basePath('img/sad.png')}'  style='width: 35px; height: 35px;'>":"<img src='{$this->basePath('img/sad.png')}' style='width: 20px; height: 20px;'>"?></div>
+                        <div class="display-inline"> <?php echo ($values['sentimento']== 'mixed')?"<img src='{$this->basePath('img/confused.png')}'  style='width: 35px; height: 35px;'>":"<img src='{$this->basePath('img/confused.png')}' style='width: 20px; height: 20px;'>"?></div>
+                    </div>
+                    <hr>
+                <?php endif;?>
+                <?php if(empty($values['post'])): ?>
+                    <button type="button" class="btn btn-light-yellow btn-sm-custom">Resposta Faber-Castell</button>
+                    <hr>
+                <?php endif;?>
+
+
+                <?php if(!empty($values['post'])): ?>
+                    <p><?php echo $values['post']?></p>
+                <?php else: ?>
+                    <p><?php echo $values['resp']?></p>
+                <?php endif; ?>
+                <p style="font-size: 9px;">por <?php echo $values['nome']?> em <?php echo $values['dt_post']?> às <?php echo $values['hh_post']?> </p>
+            </div>
+
+        </div>
+
+    <?php endforeach;?>
+</div>

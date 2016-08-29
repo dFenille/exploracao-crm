@@ -1,0 +1,54 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TicketMencao
+ *
+ * @ORM\Table(name="ticket_mencao", indexes={@ORM\Index(name="id_mention", columns={"id_mention"})})
+ * @ORM\Entity
+ */
+class TicketMencao
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_tickets_mencao", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idTicketsMencao;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_mention", type="bigint", nullable=true)
+     */
+    private $idMention;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ticket_id", type="bigint", nullable=true)
+     */
+    private $ticketId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="assinatura_id", type="bigint", nullable=true)
+     */
+    private $assinaturaId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=60, nullable=true)
+     */
+    private $status;
+
+
+}
+

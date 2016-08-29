@@ -1,0 +1,54 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TtrCalendar
+ *
+ * @ORM\Table(name="ttr_calendar", indexes={@ORM\Index(name="IX_ttr_calendar", columns={"day_name"}), @ORM\Index(name="IX_ttr_calendar_1", columns={"begin_time"}), @ORM\Index(name="IX_ttr_calendar_2", columns={"end_time"})})
+ * @ORM\Entity
+ */
+class TtrCalendar
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="day_number", type="string", length=50, nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $dayNumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="day_name", type="string", length=50, nullable=true)
+     */
+    private $dayName;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="begin_time", type="datetime", nullable=true)
+     */
+    private $beginTime;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="end_time", type="datetime", nullable=true)
+     */
+    private $endTime;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="duration", type="float", precision=24, scale=0, nullable=true)
+     */
+    private $duration;
+
+
+}
+

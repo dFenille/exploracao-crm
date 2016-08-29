@@ -1,0 +1,75 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * FbPost
+ *
+ * @ORM\Table(name="fb_post")
+ * @ORM\Entity
+ */
+class FbPost
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_fb", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idFb;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="id_fb_post", type="string", length=50, nullable=true)
+     */
+    private $idFbPost;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="id_fb_user", type="string", length=50, nullable=true)
+     */
+    private $idFbUser;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="id_fb_type", type="string", length=50, nullable=true)
+     */
+    private $idFbType;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="message", type="text", length=16, nullable=true)
+     */
+    private $message;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_time", type="datetime", nullable=true)
+     */
+    private $createdTime;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_time", type="datetime", nullable=true)
+     */
+    private $updatedTime;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dt_process", type="datetime", nullable=true)
+     */
+    private $dtProcess;
+
+
+}
+

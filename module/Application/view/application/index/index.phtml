@@ -1,0 +1,154 @@
+<?php $time = time();?>
+<div class="row">
+	<div class="col-md-5">
+		<h3>Lista Monitaração</h3>
+		<?php // \Zend\Debug\Debug::dump($result->data);?>
+		<div class="table-responsive">
+          	<table class="table">
+          			<tr>
+          				<th>Id Monitoração</th>
+          				<th>Nome</th>
+          				<th>N. de Menções</th>
+          			</tr>
+        		<?php foreach ($result->data as $valuesMonitoring):?>
+        		
+                        <tr>
+                        	<td><?php echo $valuesMonitoring->id;?></td>
+                        	<td><?php echo $valuesMonitoring->name;?></td>
+                        	<td><?php echo $valuesMonitoring->number_of_mentions;?></td>
+                    	</tr>
+                    
+        		<?php endforeach;?>
+		  	</table>
+        </div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-5">
+		<form action="javascript:void(0);" id="form-procuras">
+        	<div class="form-group">
+        			<label> Id Monitoração</label>
+        			<p>Para listar as procuras pegue o id da monitoração e cole no campo abaixo</p>
+        			<input class="form-control" name="monitoring_id" placeholder="123456"> 
+        	</div>			
+        </form>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-md-12">
+		<h3>Lista de Procuras</h3>
+		<img class="hidden col-md-offset-3" id="carregando-procura" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" style="max-width: 250px;">
+		<div id="list-procura">
+		</div>
+	</div>
+</div>
+
+ <div class="row">
+    <div class="col-md-5">
+    	<h3>Menções</h3>
+        <form action="javascript:void(0);" id="form-autenticacao">
+        	<div class="form-group">
+				<label> id Monitoring</label>
+    			<input class="form-control" name="idMonitoring" id="monitoring_id">
+        	</div>
+        	<div class="form-group">
+    			<label>rede social</label>
+    			<input class="form-control" name="social_network" placeholder="facebook,twitter,instagram">
+			</div>
+			<div class="form-group">
+    			<label>Data inicial</label>
+    			<input class="form-control" id="dt_start" name="published_date[]" placeholder="2016-06-07 00:00:00">
+			</div>
+			<div class="form-group">
+    			<label>Data final</label>
+    			<input class="form-control" id="dt_end" name="published_date[]" placeholder="2016-06-07 00:00:00" disabled="disabled">
+			</div>
+			<div class="form-group">
+    			<label>login usuario</label>
+    			<input class="form-control" name="social_network_user_id" value="thewronggirl@hotmail.com">
+			</div>
+			
+			<div class="form-group">
+    			<label>Id Menção</label>
+    			<input class="form-control" name="mention_id" placeholder="1151232972">
+			</div>
+			<div class="form-group">
+    			<label>id Pesquisa</label>
+    			<input class="form-control" name="searches_ids" placeholder="679817">
+			</div>
+			<div class="form-group">
+    			<label>Limite de dados</label>
+    			<input class="form-control" name="ipp" value="10">
+			</div>
+			<div class="form-group">
+    			<label>Pagina p/ paginação</label>
+    			<input class="form-control" name="page" value="1">
+			</div>
+			
+			<div class="form-group">
+    			<label>Sentimento</label>
+    			<input class="form-control" name="sentiment" placeholder="positive,neutral,negative">
+			</div>
+			
+        	<div class="form-group pull-right">
+        			<button type="button" class="btn btn-danger" onclick="mentions();">Receber</button>
+        	</div>
+        </form>  
+    </div>
+    <div class="col-md-7">
+		<img class="hidden col-md-offset-3" id="carregando" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" style="max-width: 250px;">
+		<div id="result">
+		</div>
+    </div>
+</div>
+  
+
+<script>
+
+$('#dt_start').mask('9999-99-99 99:99:99');
+$('#dt_end').mask('9999-99-99 99:99:99');
+
+$('#dt_start').on('change',function(){
+	if($(this).val() == ''){
+		$('#dt_end').attr('disabled',true);
+	}else{
+		$('#dt_end').attr('disabled',false);
+	}
+})
+
+function mentions(){
+	$('#carregando').removeClass('hidden');	
+	$('#result').empty();	
+	var form = $('#form-autenticacao');
+
+	$.ajax({
+		type:'GET',
+		url: '<?php echo $this->url('get-info',array('action'=>'get-mentions'))?>',
+		data: form.serialize(),
+		success:function(result){
+				$('#carregando').addClass('hidden');
+				$('#result').html(result);
+			}	
+		})
+}
+
+$('input[name=monitoring_id]').on('change',function(){
+	$('#carregando-procura').removeClass('hidden');
+	var monitoring_id = $(this).val(); 
+	$.ajax({
+		type:'GET',
+		url: '<?php echo $this->url('get-info',array('action'=>'get-searchs'))?>',
+		data: 'monitoring_id='+monitoring_id,
+		success:function(result){
+				$('#carregando').addClass('hidden');
+				$('#list-procura').empty().html(result);
+				$('#monitoring_id').val(monitoring_id);
+				$('#carregando-procura').addClass('hidden');
+			}	
+		})
+})
+
+</script>

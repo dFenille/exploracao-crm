@@ -1,0 +1,89 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Posts
+ *
+ * @ORM\Table(name="POSTS", indexes={@ORM\Index(name="id_conversa", columns={"id_conversa"}), @ORM\Index(name="idUser", columns={"idUser"}), @ORM\Index(name="sentimento", columns={"sentimento"}), @ORM\Index(name="dt_post", columns={"dt_post"})})
+ * @ORM\Entity
+ */
+class Posts
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_post", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idPost;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_conversa", type="integer", nullable=true)
+     */
+    private $idConversa;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_mention", type="bigint", nullable=true)
+     */
+    private $idMention;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idUser", type="bigint", nullable=true)
+     */
+    private $iduser;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dt_post", type="datetime", nullable=true)
+     */
+    private $dtPost;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="post", type="string", length=2000, nullable=true)
+     */
+    private $post = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="resp", type="string", length=2000, nullable=true)
+     */
+    private $resp = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sentimento", type="string", length=20, nullable=true)
+     */
+    private $sentimento;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tag", type="string", length=50, nullable=true)
+     */
+    private $tag;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="permalink", type="string", length=500, nullable=true)
+     */
+    private $permalink;
+
+
+}
+

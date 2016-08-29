@@ -1,0 +1,75 @@
+<?php  \Zend\Debug\Debug::dump($result->data);?>
+	
+<?php if(!empty($result) && !isset($result->data->error_code)):?>
+    <?php foreach($result->data as $values):?>
+        <div class="row">
+        	<div class="col-md-12">
+        		<div class="row">
+            		<div class="col-md-2" style="margin-top: 10px;">
+            			<img src="<?php echo ($values->search->search_type_name != 'twitterstream')?$values->user->picture:$this->basePath('img/placeholder-user.png');?>" class="img-responsive" style=" max-width: 50px">
+            		</div>
+            		<div class="col-md-8">
+            			<label>Usuário:</label>
+                		<?php  switch ($values->search->search_type_name){
+                                    case 'twitterstream':
+                                        echo "Twitter";
+                                    break;
+                                    case 'facebookmessages':
+                                        echo $values->user->facebook_name;
+                                    break;
+                                    case 'facebookwall':
+                                        echo $values->user->facebook_name;
+                                    break;
+                                    case 'instagramtags':
+                                        echo $values->user->instagram_name;
+                                }   ?>
+                		
+                		<br>
+            			
+            			<label>Sentimento:</label>
+            			<?php echo $values->mention->sentiment ?>
+            			<br>
+            			
+            			<label>Link publicação:</label>
+                			<a target="_blank" href="<?php echo $values->mention->content->permalink?>" >
+                				<i class="glyphicon glyphicon-globe"></i>&nbsp;
+                				<?php  switch ($values->search->search_type_name){
+                                            case 'twitterstream':
+                                                echo "Twitter";
+                                            break;
+                                            case 'facebookmessages':
+                                                echo "Facebook - INBOX";
+                                            break;
+                                            case 'facebookwall':
+                                                echo "Facebook - MURAL";
+                                            break;
+                                            case 'instagramtags':
+                                                echo "Instagram";
+                                        }   ?>
+            				</a>
+                		<br>
+                		
+                		<label>Publicação:</label>
+                		<?php $list = explode('PICTURE:', $values->mention->content->description); ?>
+                		<?php $list2 = explode('LINK:', $list[0])?>
+                		
+            			<?php echo $list2[0]?>
+            			<br>
+            			
+            			<label>Publicado em:</label>
+            			<?php echo $values->mention->published_at?>
+            			
+            			<?php if(!empty($values->user->notes)):?>
+            				<br>
+                			<label> Notas </label>
+            				<?php echo $values->user->notes?>
+        				<?php endif;?>
+            		</div>
+        		</div>
+        	</div>
+        </div>
+        <hr>
+    <?php endforeach;?>
+<?php else:?>
+	<i><h4>Não foi encontrada nenhuma menção de acordo com os filtros</h4></i>	
+<?php endif;?>

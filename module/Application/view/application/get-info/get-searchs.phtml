@@ -1,0 +1,23 @@
+<?php //\Zend\Debug\Debug::dump($result->data);?>
+	<?php if(!isset($result->data->error_code)):?>
+       <div class="table-responsive">
+          	<table class="table">
+          			<tr>
+          				<th>Id Pesquisa</th>
+          				<th>Rede Social</th>
+          				<th>Pesquisa</th>
+          			</tr>
+        		<?php foreach ($result->data as $valuesSearchs):?>
+        		
+                        <tr>
+                        	<td><?php echo $valuesSearchs->id;?></td>
+                        	<td><?php echo $valuesSearchs->social_network;?></td>
+                        	<td><?php echo $valuesSearchs->query;?></td>
+                    	</tr>
+                    
+        		<?php endforeach;?>
+		  	</table>
+        </div>
+    <?php else:?>
+    	<i><h4>Não foi encontrada nenhuma busca cadastrada no SCUP</h4></i>
+    <?php endif;?>

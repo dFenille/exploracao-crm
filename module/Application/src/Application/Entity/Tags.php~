@@ -1,0 +1,47 @@
+<?php
+
+namespace Application\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Tags
+ *
+ * @ORM\Table(name="tags")
+ * @ORM\Entity
+ */
+class Tags
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_tag", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idTag;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_tag_action", type="bigint", nullable=true)
+     */
+    private $idTagAction;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tag", type="string", length=200, nullable=true)
+     */
+    private $tag;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_monitoring", type="integer", nullable=true)
+     */
+    private $idMonitoring;
+
+
+}
+
