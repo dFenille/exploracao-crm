@@ -35,7 +35,7 @@ class GetInfoController extends AbstractAppController
         $dateEnd    = isset($data['dataFim'])?$data['dataFim']:date('Y-m-d', strtotime('-1 day'));
         
         
-        /** PARAMETROS **/
+        /** PARAMETROS 123**/
         $result.="publickey=".PUBLIC_KEY."&signature=".md5($time.PRIVATE_KEY)."&time=".$time;
 //      $result.='&published_date='.date('Y-m-d')."%2000:00:00|".date('Y-m-d')."%2023:59:59";
         $result.='&published_date='.$dateStart."%2000:00:00|".$dateEnd."%2023:59:59";
