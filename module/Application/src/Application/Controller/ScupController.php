@@ -19,6 +19,28 @@ use Zend\I18n\View\Helper\DateFormat;
 
 class ScupController extends AbstractAppController
 {
+    public function homeAction()
+    {
+        $request    = $this->getRequest();
+        $data       = $request->getQuery();
+        $result     = null;
+        $time       = time();
+        $getUrl     = null;
+        $getUrl.="publickey=".PUBLIC_KEY."&time=".$time."&signature=".md5($time.PRIVATE_KEY);
+
+
+        $scupModel = new ScupApiModel($this->getEntityManager());
+        $result = $scupModel->getMonitoring($getUrl);
+        if(!empty($result) && !isset($result->data->error_code)){
+            foreach($result->data as $valuesMonitoring){
+                $tags = $scupModel->getTags(array('idMonitoring'=>$valuesMonitoring->id));
+                $scupModel->sincronizarTags($tags,$valuesMonitoring->id);
+            }
+        }
+
+        return new ViewModel(array('result'=>$result));
+    }
+
     public function indexAction()
     {
 

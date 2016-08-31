@@ -222,7 +222,19 @@ class RelatorioModel
 
         return $protocolo;
     }
+    public function getFilterVInboxPending($columnName = 'depto_to'){
 
+        $sql = "SELECT DISTINCT ({$columnName}) FROM v_inbox_pending_gerencia ORDER BY 1 ASC ";
+        $query = $this->em->getConnection()->prepare($sql);
+        $query->execute();
+        $result = $query->fetchAll();
+
+        return $result;
+    }
+
+
+
+    /** BASE PV **/
     public function getFilterVProtocolo($columnName = 'depto_from'){
 
         $sql = "SELECT DISTINCT ({$columnName}) FROM v_protocolo ORDER BY 1 ASC ";
@@ -233,7 +245,6 @@ class RelatorioModel
         return $result;
     }
 
-    /** BASE PV **/
     public function getFilterFaberManifest($columnName = 'canal'){
 
         $sql = "SELECT DISTINCT {$columnName} FROM FaberManifest ORDER BY 1 ASC";
@@ -243,7 +254,7 @@ class RelatorioModel
 
         return $result;
     }
-    /** BASE PV **/
+
     public function getFilterFaberCons($columnName = 'cidade')
     {
 

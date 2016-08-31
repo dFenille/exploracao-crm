@@ -43,7 +43,7 @@
 	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 		<div class="dashboard-stat blue">
 			<div class="visual">
-				<i class="fa fa-comments"></i>
+				<i class="fa fa-tasks"></i>
 			</div>
 			<div class="details">
 				<div class="number">
@@ -66,7 +66,7 @@
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-settings font-dark"></i>
-					<span class="caption-subject font-dark sbold uppercase">Tempo de conclusão de atividades internas</span>
+					<span class="caption-subject font-dark sbold uppercase">Detalhe Evento Pendente</span>
 				</div>
 				<div class="actions">
 					<div class="btn-group">
@@ -79,135 +79,39 @@
 			</div>
 			<div class="portlet-body">
 
-				<div class="row">
-					<div class="col-md-2">
-						<div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
-							<input type="text" class="form-control form-filter input-sm" onchange="passaValorHidden($(this),$('#data-ini'))" readonly="" name="order_date_from" placeholder="Data Inicial" value="01/07/2016">
-							<span class="input-group-btn">
-                                <button class="btn btn-sm default" type="button">
-                                    <i class="fa fa-calendar"></i>
-                                </button>
-                            </span>
-						</div>
-					</div>
-					<div class="col-md-2">
-						<div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
-							<input type="text" class="form-control form-filter input-sm" readonly=""  onchange="passaValorHidden($(this),$('#data-fim'))" name="order_date_to" placeholder="Data Final" value="31/07/2016">
-							<span class="input-group-btn">
-                                <button class="btn btn-sm default" type="button">
-                                    <i class="fa fa-calendar"></i>
-                                </button>
-                            </span>
-						</div>
-					</div>
-					<div class="col-md-1">
-						<label style="margin-top: 7px;">Tempo Dias</label>
-					</div>
-					<div class="col-md-1">
-						<input type="text" class="form-control form-filter input-sm" name="dia_ini" onchange="passaValorHidden($(this),$('#dia-ini'))" placeholder="Dia" maxlength="5">
-					</div>
-					<div style="width: 10px;float: left; margin-top: 7px;">
-						<label>a</label>
-					</div>
-					<div class="col-md-1">
-						<input type="text" class="form-control form-filter input-sm" name="dia_fim" onchange="passaValorHidden($(this),$('#dia-fim'))" placeholder="Dias" maxlength="5">
-					</div>
-					<div class="col-md-2">
-						<button class="btn btn-sm blue" type="button" onclick="$('#submit-filter').click();">OK</button>
-					</div>
-				</div>
-
-
-
 				<div class="table-container">
 					<table class="table table-striped table-bordered table-hover table-checkable" id="datatable_ajax">
 						<thead>
 						<tr role="row" class="heading">
-
 							<th> # </th>
-							<th> Contato </th>
-							<th> Orig Depto</th>
-							<th> Orig Agt</th>
-							<th> Dest Depto</th>
-							<th> Dest Agt</th>
-							<th> Agt Concl </th>
-							<th> Evento </th>
-							<th> Dt Fup</th>
-							<th> Dt Prev</th>
-							<th> Dt Concl</th>
-							<th> Orientação </th>
-							<th> Tempo Dias</th>
-							<th> Tempo Horas</th>
-							<th> Nivel Servico </th>
+							<th> Data Coleta</th>
+							<th> Data Previsao </th>
+							<th> Data Transferencia</th>
+							<th> Tempo horas Previsto</th>
+							<th> Tempo Horas Decorrido</th>
+							<th> Evento</th>
+							<th> Urgente</th>
+							<th> Mensagem</th>
+							<th> Agente From</th>
+							<th> Nome consumidor</th>
 
 						</tr>
-						<tr role="row" class="filter">
+						<tr role="row" class="filter hidden">
 							<td>
 								<div class="hidden">
-									<input type="hidden" class="form-control form-filter input-sm form-filter-pessoa" id="dia-ini" name="diaini" value="00">
-									<input type="hidden" class="form-control form-filter input-sm form-filter-pessoa" id="dia-fim" name="diafim" value="10000">
-									<input type="hidden" class="form-control form-filter input-sm form-filter-pessoa" id="data-ini" name="dataini" value="01/07/2016">
-									<input type="hidden" class="form-control form-filter input-sm form-filter-pessoa" id="data-fim" name="datafim" value="31/07/2016">
 									<div class="margin-bottom-5">
 										<button class="btn btn-sm green btn-outline filter-submit margin-bottom" id="submit-filter">
-											<i class="fa fa-search"></i> Search</button>
+											<i class="fa fa-search"></i> Search
+										</button>
 									</div>
 									<button class="btn btn-sm red btn-outline filter-cancel">
-										<i class="fa fa-times"></i> Reset</button>
+										<i class="fa fa-times"></i> Reset
+									</button>
 
 								</div>
-
-							</td>
-							<td>
-								<input type="text"  class="form-control form-filter input-sm" placeholder="Ctt" name="ctt">
-							</td>
-							<td>
-								<select class="form-control form-filter input-sm" multiple="true" data-placeholder="Selecionar" name="depto_from[]">
-									<option></option>
-									<?php foreach($origDepto as $values):?>
-										<option value="<?php echo $values['depto_from']?>"><?php echo $values['depto_from']?></option>
-									<?php endforeach;?>
-								</select>
-							</td>
-							<td>
-								<select class="form-control form-filter input-sm" multiple="true" data-placeholder="Selecionar" name="nome_agente_from[]">
-									<option></option>
-									<?php foreach($origAgt as $values):?>
-										<option value="<?php echo $values['nome_agente_from']?>"><?php echo $values['nome_agente_from']?></option>
-									<?php endforeach;?>
-								</select>
-							</td>
-							<td>
-								<select class="form-control form-filter input-sm" multiple="true" data-placeholder="Selecionar" name="depto_to[]">
-									<option></option>
-									<?php foreach($destDepto as $values):?>
-										<option value="<?php echo $values['depto_to']?>"><?php echo $values['depto_to']?></option>
-									<?php endforeach;?>
-								</select>
-							</td>
-							<td>
-								<select class="form-control form-filter input-sm" multiple="true" data-placeholder="Selecionar" name="nome_agente_to[]">
-									<option></option>
-									<?php foreach($destAgt as $values):?>
-										<option value="<?php echo $values['nome_agente_to']?>"><?php echo $values['nome_agente_to']?></option>
-									<?php endforeach;?>
-								</select>
-							</td>
-							<td>
-								<select class="form-control form-filter input-sm" multiple="true" data-placeholder="Selecionar" name="nome_agente_encer[]">
-									<option></option>
-									<?php foreach($conclAgt as $values):?>
-										<option value="<?php echo $values['nome_agente_encer']?>"><?php echo $values['nome_agente_encer']?></option>
-									<?php endforeach;?>
-								</select>
-							</td>
-							<td>
-								<select class="form-control form-filter input-sm" multiple="true" data-placeholder="Selecionar" name="evento">
-									<option></option>
-									<?php foreach($evento as $values):?>
-										<option value="<?php echo $values['evento']?>"><?php echo $values['evento']?></option>
-									<?php endforeach;?>
-								</select>
+								<input type="hidden" class="form-control form-filter input-sm form-filter-pessoa" id="dia-ini" name="depto_destino" value="<?php echo $data['depto_destino']?>">
+								<input type="hidden" class="form-control form-filter input-sm form-filter-pessoa" id="dia-ini" name="agente_to" value="<?php echo $data['agente_to']?>">
+								<input type="hidden" class="form-control form-filter input-sm form-filter-pessoa" id="dia-ini" name="evento" value="<?php echo $data['evento']?>">
 							</td>
 							<td>
 
@@ -219,9 +123,6 @@
 
 							</td>
 							<td>
-								<input type="text" name="batepapo" class="form-control form-filter input-sm" placeholder="Orientação">
-							</td>
-							<td>
 
 							</td>
 							<td>
@@ -230,6 +131,20 @@
 							<td>
 
 							</td>
+							<td>
+
+							</td>
+							<td>
+
+							</td>
+
+							<td>
+
+							</td>
+							<td>
+
+							</td>
+
 						</tr>
 						</thead>
 						<tbody> </tbody>
@@ -303,11 +218,6 @@
 					$('#manifestacoes-total').attr('data-value',response.recordsTotal);
 					$('#manifestacoes-total').counterUp({time: 2500});
 
-					$('#total-contatos').attr('data-value',response.totalContatos);
-					$('#total-contatos').counterUp({time: 2500});
-
-					$('#total-consumidores').attr('data-value',response.totalConsumidores);
-					$('#total-consumidores').counterUp({time: 2500});
 					// grid:        grid object
 					// response:    json object of server side ajax response
 					// execute some code after table records loaded
@@ -335,12 +245,12 @@
 					],
 					"pageLength": 10, // default record count per page
 					"ajax": {
-						"url": "<?php echo $this->basePath('relatorio/list-fup'); ?>", // ajax source
+						"url": "<?php echo $this->basePath('relatorio/list-detalhe-evento'); ?>", // ajax source
 					},
 					"order": [
 						[1, "asc"]
 					],// set first column as a default sort by asc
-					columnDefs: [ { orderable: false, targets: [0] },{ orderable: false, targets: [14] }, ],
+					columnDefs: [ { orderable: false, targets: [0] }, ],
 				}
 			});
 
@@ -393,6 +303,7 @@
 			no_results_text: "Oops, Não encontramos nada!"
 		});
 		$('select[name="datatable_ajax_length"').chosen('destroy');
+		$('#submit-filter').click();
 	});
 
 </script>

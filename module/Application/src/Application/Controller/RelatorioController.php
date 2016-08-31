@@ -878,9 +878,7 @@ class RelatorioController extends AbstractAppController
 
                         FROM v_protocolo WHERE 1=1 ";
 
-        if(isset($_REQUEST['ctt']) && !empty($_REQUEST['ctt'])){
-            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['ctt'],'cod_mens');
-        }
+
 
         if(isset($_REQUEST['depto_from']) && !empty($_REQUEST['depto_from'])){
             $sql.= $relatorioModel->montaWhere($_REQUEST['depto_from'],'depto_from');
@@ -1002,7 +1000,311 @@ class RelatorioController extends AbstractAppController
 
     }
 
+    public function eventoPendenteAction()
+    {
+        $this->layout()->title = 'CRM - Eventos Pendentes';
+        $request = $this->getRequest();
+        $data = $request->getQuery();
+        $relatorioModel = new RelatorioModel($this->getEntityManagerHth());
+        $deptoTo = $relatorioModel->getFilterVInboxPending('depto_to');
+        $agtTo   = $relatorioModel->getFilterVInboxPending('agente_to');
+        $evento = $relatorioModel->getFilterVInboxPending('evento');
 
+        return new ViewModel(array('deptoTo' => $deptoTo, 'agtTo' => $agtTo,'evento' => $evento));
+
+    }
+
+    public function listEventoPendenteAction()
+    {
+        $relatorioModel = new RelatorioModel($this->getEntityManagerFaber());
+        $sql = "SELECT
+                               COUNT(*) OVER () AS TotalRecords
+                  FROM v_inbox_pending_gerencia
+                    WHERE evento <> 'virgem' AND
+                        NOT (depto_to = 'SAC' AND evento = 'RESPONSAVEL') AND
+                        NOT (depto_to = 'SAC' AND evento = 'CONHECIMENTO') ";
+
+        if(isset($_REQUEST['depto_to']) && !empty($_REQUEST['depto_to'])){
+            $sql.= $relatorioModel->montaWhere($_REQUEST['depto_to'],'depto_to');
+        }
+
+        if(isset($_REQUEST['nome_agente_from']) && !empty($_REQUEST['nome_agente_from'])){
+            $sql.= $relatorioModel->montaWhere($_REQUEST['nome_agente_from'],'agente_to');
+        }
+
+        if(isset($_REQUEST['evento']) && !empty($_REQUEST['evento'])){
+            $sql.= $relatorioModel->montaWhere($_REQUEST['evento'],'evento');
+        }
+
+        if(isset($_REQUEST['agente_destino']) && !empty($_REQUEST['agente_destino'])){
+            $sql.= $relatorioModel->montaWhere($_REQUEST['agente_destino'],'agente_destino');
+        }
+
+        if(isset($_REQUEST['qtde']) && !empty($_REQUEST['qtde'])){
+            $sql.= " AND qtde >={$_REQUEST['qtde']} AND qtde <= {$_REQUEST['qtde']}";
+        }
+
+
+        $query = $this->getEntityManagerHth()->getConnection()->prepare($sql);
+        $query->execute();
+        $totalDados = $query->fetchAll();
+
+        if(empty($totalDados))
+            $totalDados = 0;
+        else
+            $totalDados = $totalDados[0]['TotalRecords'];
+
+
+        $iTotalRecords = $totalDados;
+        $iDisplayLength = intval($_REQUEST['length']);
+        $iDisplayLength = $iDisplayLength < 0 ? $iTotalRecords : $iDisplayLength;
+        $iDisplayStart = intval($_REQUEST['start']);
+        $sEcho = intval($_REQUEST['draw']);
+
+
+        $order = $_REQUEST['order'];
+
+        $orderbyColumn = $order[0]['column'];
+        $orderbyDir    = $order[0]['dir'];
+
+        $sql = "
+                DECLARE @FirstRow INT, @LastRow INT
+                    SELECT  @FirstRow   = ((({$_REQUEST['start']}+1) - 1)) + 1,
+                            @LastRow    = ((({$_REQUEST['start']}+1) - 1)) + {$_REQUEST['length']};
+                    WITH vEventoPendente AS
+                    (
+
+                        SELECT depto_to as depto_destino,
+                               agente_to as agente_destino,
+                               evento,
+                               CONVERT(varchar(20),min(dt_transf) ,103) +' '+ CONVERT(varchar(10),min(dt_transf) ,108) as dt_mais_antiga,
+                               COUNT(*) as qtde,
+                               row_number() OVER (ORDER BY {$this->getOrderByColumnEvento($orderbyColumn)} {$orderbyDir}) AS RowNumber,
+                               COUNT(*) OVER () AS TotalRecords
+                        FROM v_inbox_pending_gerencia
+                        where evento <> 'virgem' AND
+                            NOT (depto_to = 'SAC' and evento = 'RESPONSAVEL') AND
+                            NOT (depto_to = 'SAC' and evento = 'CONHECIMENTO')  ";
+        if(isset($_REQUEST['depto_to']) && !empty($_REQUEST['depto_to'])){
+            $sql.= $relatorioModel->montaWhere($_REQUEST['depto_to'],'depto_to');
+        }
+
+        if(isset($_REQUEST['nome_agente_from']) && !empty($_REQUEST['nome_agente_from'])){
+            $sql.= $relatorioModel->montaWhere($_REQUEST['nome_agente_from'],'agente_to');
+        }
+
+        if(isset($_REQUEST['evento']) && !empty($_REQUEST['evento'])){
+            $sql.= $relatorioModel->montaWhere($_REQUEST['evento'],'evento');
+        }
+
+        if(isset($_REQUEST['agente_destino']) && !empty($_REQUEST['agente_destino'])){
+            $sql.= $relatorioModel->montaWhere($_REQUEST['agente_destino'],'agente_destino');
+        }
+
+        if(isset($_REQUEST['qtde']) && !empty($_REQUEST['qtde'])){
+            $sql.= " AND qtde >={$_REQUEST['qtde']} AND qtde <= {$_REQUEST['qtde']}";
+        }
+
+        $sql.=" GROUP BY id_protocolo,depto_to, agente_to, evento ";
+
+        $sql.=")
+                SELECT * , (SELECT COUNT(*) FROM vEventoPendente) AS TotalRecords
+                        FROM vEventoPendente
+                        WHERE RowNumber BETWEEN @FirstRow AND @LastRow
+                        ORDER BY RowNumber ASC";
+
+        $query = $this->getEntityManagerHth()->getConnection()->prepare($sql);
+        $query->execute();
+
+        $result = $query->fetchAll();
+
+        $records = array();
+        $records["data"] = array();
+
+        foreach($result as $row){
+            $records["data"][] = array(
+                '',
+                $row['depto_destino'],
+                $row['agente_destino'],
+                "<a href='{$this->url()->fromRoute('relatorio',array('action'=>'detalhe-evento'))}?depto_to={$row['depto_destino']}&agente_to={$row['agente_destino']}&evento={$row['evento']}' target='_blank'>".$row['evento']."</a>",
+                $row['dt_mais_antiga'],
+                $row['qtde'],
+                '',
+
+            );
+        }
+
+        if (isset($_REQUEST["customActionType"]) && $_REQUEST["customActionType"] == "group_action") {
+            $records["customActionStatus"] = "OK"; // pass custom message(useful for getting status of group actions)
+            $records["customActionMessage"] = "Group action successfully has been completed. Well done!"; // pass custom message(useful for getting status of group actions)
+        }
+
+        $records["draw"] = $sEcho;
+        $records["recordsTotal"] = $iTotalRecords;
+        $records["recordsFiltered"] = $iTotalRecords;
+        $records["totalContatos"] = count($result);
+
+        return new JsonModel($records);
+
+    }
+
+    public function getOrderByColumnEvento($idColumn)
+    {
+
+        $columns = array(1 => 'depto_to',
+            2 => 'agente_to',
+            3 => 'evento',
+            4 => 'min(dt_transf)',
+            5 => 'count(*)',
+
+        );
+
+        return $columns[$idColumn];
+
+    }
+
+
+    public function detalheEventoAction()
+    {
+        $request = $this->getRequest();
+        $data = $request->getQuery();
+        return new ViewModel(array('data'=>$data));
+    }
+
+    public function listDetalheEventoAction()
+    {
+        $relatorioModel = new RelatorioModel($this->getEntityManagerFaber());
+        $sql = "SELECT
+                               COUNT(*) OVER () AS TotalRecords
+                  FROM v_inbox_pending_gerencia
+                    WHERE 1=1 ";
+
+        if(isset($_REQUEST['depto_to']) && !empty($_REQUEST['depto_to'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['depto_to'],'depto_to');
+        }
+
+        if(isset($_REQUEST['agente_to']) && !empty($_REQUEST['agente_to'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['agente_to'],'agente_to');
+        }
+
+        if(isset($_REQUEST['evento']) && !empty($_REQUEST['evento'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['evento'],'evento');
+        }
+
+
+        $query = $this->getEntityManagerHth()->getConnection()->prepare($sql);
+        $query->execute();
+        $totalDados = $query->fetchAll();
+
+        if(empty($totalDados))
+            $totalDados = 0;
+        else
+            $totalDados = $totalDados[0]['TotalRecords'];
+
+
+        $iTotalRecords = $totalDados;
+        $iDisplayLength = intval($_REQUEST['length']);
+        $iDisplayLength = $iDisplayLength < 0 ? $iTotalRecords : $iDisplayLength;
+        $iDisplayStart = intval($_REQUEST['start']);
+        $sEcho = intval($_REQUEST['draw']);
+
+
+        $order = $_REQUEST['order'];
+
+        $orderbyColumn = $order[0]['column'];
+        $orderbyDir    = $order[0]['dir'];
+
+        $sql = "
+                DECLARE @FirstRow INT, @LastRow INT
+                    SELECT  @FirstRow   = ((({$_REQUEST['start']}+1) - 1)) + 1,
+                            @LastRow    = ((({$_REQUEST['start']}+1) - 1)) + {$_REQUEST['length']};
+                    WITH vEventoPendente AS
+                    (
+
+                        SELECT cod_mens,dt_coleta,dt_previsao,dt_transf,
+                            tempo_fup_horas_previsto,tempo_fup_horas_decorrido,evento,
+                            urgente,mensagem,agente_from,nome,
+                            row_number() OVER (ORDER BY {$this->getFilterColumnDetalhe($orderbyColumn)} {$orderbyDir}) AS RowNumber,
+                               COUNT(*) OVER () AS TotalRecords
+                        FROM v_inbox_pending_gerencia
+                        where 1=1  ";
+
+        if(isset($_REQUEST['depto_to']) && !empty($_REQUEST['depto_to'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['depto_to'],'depto_to');
+        }
+
+        if(isset($_REQUEST['agente_to']) && !empty($_REQUEST['agente_to'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['agente_to'],'agente_to');
+        }
+
+        if(isset($_REQUEST['evento']) && !empty($_REQUEST['evento'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['evento'],'evento');
+        }
+
+        $sql.=")
+                SELECT * , (SELECT COUNT(*) FROM vEventoPendente) AS TotalRecords
+                        FROM vEventoPendente
+                        WHERE RowNumber BETWEEN @FirstRow AND @LastRow
+                        ORDER BY RowNumber ASC";
+
+        $query = $this->getEntityManagerHth()->getConnection()->prepare($sql);
+        $query->execute();
+
+        $result = $query->fetchAll();
+
+        $records = array();
+        $records["data"] = array();
+
+        foreach($result as $row){
+            $records["data"][] = array(
+                $row['cod_mens'],
+                $row['dt_coleta'],
+                $row['dt_previsao'],
+                $row['dt_transf'],
+                $row['tempo_fup_horas_previsto'],
+                $row['tempo_fup_horas_decorrido'],
+                $row['evento'],
+                $row['urgente'],
+                $row['mensagem'],
+                $row['agente_from'],
+                $row['nome'],
+
+
+            );
+        }
+
+        if (isset($_REQUEST["customActionType"]) && $_REQUEST["customActionType"] == "group_action") {
+            $records["customActionStatus"] = "OK"; // pass custom message(useful for getting status of group actions)
+            $records["customActionMessage"] = "Group action successfully has been completed. Well done!"; // pass custom message(useful for getting status of group actions)
+        }
+
+        $records["draw"] = $sEcho;
+        $records["recordsTotal"] = $iTotalRecords;
+        $records["recordsFiltered"] = $iTotalRecords;
+        $records["totalContatos"] = count($result);
+
+        return new JsonModel($records);
+
+    }
+
+    public function getFilterColumnDetalhe($idColumn)
+    {
+        $columns = array(
+                        1  => 'dt_coleta',
+                        2  => 'dt_previsao',
+                        3  => 'dt_transf',
+                        4  => 'tempo_fup_horas_previsto',
+                        5  => 'tempo_fup_horas_decorrido',
+                        6  => 'evento',
+                        7  => 'urgente',
+                        8  => 'mensagem',
+                        9  => 'agente_from',
+                        10 => 'nome',
+            );
+
+        return $columns[$idColumn];
+
+    }
 
     public function getOrientacaoAction()
     {
