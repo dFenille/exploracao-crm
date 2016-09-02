@@ -343,6 +343,39 @@ class RelatorioModel
 
 
 
+    public function getIndiceGraficoEntradaCtt()
+    {
+
+        $sql = "SELECT distinct(canal_entrada_descr) as canal
+                        FROM v_contato
+                        WHERE dt_coleta between '2016-07-01' and '2016-07-30'
+                        and canal_entrada_descr NOT IN ('INSCRICAO CURSO(SITE)')";
+        $query = $this->em->getConnection()->prepare($sql);
+        $query->execute();
+        $result = $query->fetchAll();
+
+        return $result;
+    }
+
+    public function getValoresGraficoEnt($canal)
+    {
+          $sql = "SELECT canal_entrada_descr as canal,
+                        convert(varchar(10),dt_coleta,120) as dia,
+                        count(*) AS qtd
+                        FROM v_contato
+                        WHERE dt_coleta between '2016-07-01' and '2016-07-30'
+                    and canal_entrada_descr = '{$canal}'
+                    and canal_entrada_descr NOT IN ('INSCRICAO CURSO(SITE)')
+                        GROUP BY canal_entrada_descr, convert(varchar(10),dt_coleta,120)
+                        order by canal_entrada_descr, convert(varchar(10),dt_coleta,120)";
+        $query = $this->em->getConnection()->prepare($sql);
+        $query->execute();
+        $result = $query->fetchAll();
+
+        return $result;
+    }
+
+
     public function convertDate($date)
     {
         if(!empty($date)){

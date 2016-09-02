@@ -1331,9 +1331,35 @@ class RelatorioController extends AbstractAppController
 
     public function entradaContatoAction()
     {
+        $relatorioModel = new RelatorioModel($this->getEntityManagerHth());
+        $indiceGrafico  = $relatorioModel->getIndiceGraficoEntradaCtt();
+        $areaComercial  = $relatorioModel->getValoresGraficoEnt('ÁREA COMERCIAL HTH');
+        $emailLivre  = $relatorioModel->getValoresGraficoEnt('EMAIL LIVRE');
+        $faleConosco  = $relatorioModel->getValoresGraficoEnt('FALE CONOSCO HTH');
+        $telefone  = $relatorioModel->getValoresGraficoEnt('TELEFONE');
+
+
+        return new ViewModel(array('indiceGrafico' => $indiceGrafico,'areaComercial' => $areaComercial,
+                                    'emailLivre' => $emailLivre,'faleConosco' => $faleConosco,
+                                    'telefone' => $telefone ));
+    }
+
+    public function testeAction()
+    {
+        $mes = 8;
+        $ano = 2016;
+        $totalDia = cal_days_in_month(CAL_GREGORIAN, $mes, $ano);
+        $dias=null;
+        for($i=1;$i<=$totalDia;$i++){
+            $dias.=$i.",";
+
+        }
+
+        print_r($dias);
 
         return new ViewModel();
     }
+
 
     public function getOrientacaoAction()
     {

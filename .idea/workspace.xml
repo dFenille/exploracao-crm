@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ea670641-8267-4db8-b87b-a2dec669076c" name="Default" comment="">
+      <change type="MOVED" beforePath="C:\inetpub\wwwroot\exploracao-crm\module\Application\view\application\relatorio\entrada-contato123.phtml" afterPath="$PROJECT_DIR$/module/Application/view/application/relatorio/entrada-contato.phtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/module/Application/src/Application/Controller/GetInfoController.php" afterPath="$PROJECT_DIR$/module/Application/src/Application/Controller/GetInfoController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/module/Application/src/Application/Controller/RelatorioController.php" afterPath="$PROJECT_DIR$/module/Application/src/Application/Controller/RelatorioController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/module/Application/src/Application/Model/RelatorioModel.php" afterPath="$PROJECT_DIR$/module/Application/src/Application/Model/RelatorioModel.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/module/Application/src/Application/View/Helper/manifestacao.php" afterPath="$PROJECT_DIR$/module/Application/src/Application/View/Helper/manifestacao.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="exploracao-crm.iws" />
@@ -27,25 +32,62 @@
       <file leaf-file-name="RelatorioController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/module/Application/src/Application/Controller/RelatorioController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="1334" column="31" selection-start-line="1334" selection-start-column="31" selection-end-line="1334" selection-end-column="31" />
+            <state vertical-scroll-proportion="-3.9230769">
+              <caret line="1341" column="49" selection-start-line="1341" selection-start-column="49" selection-end-line="1341" selection-end-column="49" />
               <folding>
-                <marker date="1472837223599" expanded="true" signature="1935:2020" placeholder="SELECT count..FaberManifest..." />
-                <marker date="1472837223599" expanded="true" signature="12022:12311" placeholder="SELECT count..faberManifest..." />
-                <marker date="1472837223599" expanded="true" signature="23739:23820" placeholder="SELECT count..v_protocolo..." />
-                <marker date="1472837223599" expanded="true" signature="34035:34116" placeholder="SELECT count..v_protocolo..." />
-                <marker date="1472837223599" expanded="true" signature="44621:44941" placeholder="SELECT COUNT..." />
-                <marker date="1472837223599" expanded="true" signature="50832:50980" placeholder="SELECT COUNT..." />
+                <marker date="1472847471176" expanded="true" signature="1935:2020" placeholder="SELECT count..FaberManifest..." />
+                <marker date="1472847471176" expanded="true" signature="12022:12311" placeholder="SELECT count..faberManifest..." />
+                <marker date="1472847471176" expanded="true" signature="23739:23820" placeholder="SELECT count..v_protocolo..." />
+                <marker date="1472847471176" expanded="true" signature="34035:34116" placeholder="SELECT count..v_protocolo..." />
+                <marker date="1472847471176" expanded="true" signature="44621:44941" placeholder="SELECT COUNT..." />
+                <marker date="1472847471176" expanded="true" signature="50832:50980" placeholder="SELECT COUNT..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="entrada-contato123.phtml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/module/Application/view/application/relatorio/entrada-contato123.phtml">
+      <file leaf-file-name="RelatorioModel.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/module/Application/src/Application/Model/RelatorioModel.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3041145">
-              <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
+            <state vertical-scroll-proportion="-12.384615">
+              <caret line="367" column="61" selection-start-line="367" selection-start-column="61" selection-end-line="367" selection-end-column="61" />
+              <folding>
+                <marker date="1472846497128" expanded="true" signature="468:526" placeholder="SELECT count..FaberManifest..." />
+                <marker date="1472846497128" expanded="true" signature="836:1090" placeholder="SELECT count..FaberManifest..." />
+                <marker date="1472846497128" expanded="true" signature="3539:3828" placeholder="SELECT count..faberManifest..." />
+                <marker date="1472846497128" expanded="true" signature="7263:7310" placeholder="SELECT * FRO..v_protocolo..." />
+                <marker date="1472846497128" expanded="true" signature="7576:7652" placeholder="SELECT DISTI..v_inbox_pending_gerencia..." />
+                <marker date="1472846497128" expanded="true" signature="7921:7984" placeholder="SELECT DISTI..v_protocolo..." />
+                <marker date="1472846497128" expanded="true" signature="8229:8292" placeholder="SELECT DISTI..." />
+                <marker date="1472846497128" expanded="true" signature="8538:8599" placeholder="SELECT DISTI..." />
+                <marker date="1472846497128" expanded="true" signature="9670:9729" placeholder="SELECT DISTI..temposAtendimento..." />
+                <marker date="1472846497128" expanded="true" signature="9952:10116" placeholder="SELECT disti..TemposAtendimento..." />
+                <marker date="1472846497128" expanded="true" signature="10358:10493" placeholder="SELECT * FRO..TemposAtendimento..." />
+                <marker date="1472846497128" expanded="true" signature="10728:10971" placeholder="SELECT disti..v_contato..." />
+                <marker date="1472846497128" expanded="true" signature="11204:11776" placeholder="SELECT canal..v_contato..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="manifestacao.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/module/Application/src/Application/View/Helper/manifestacao.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-16.26923">
+              <caret line="115" column="32" selection-start-line="115" selection-start-column="32" selection-end-line="115" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="entrada-contato.phtml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/module/Application/view/application/relatorio/entrada-contato.phtml">
+          <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.38563326">
+              <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -54,8 +96,8 @@
       <file leaf-file-name="GetInfoController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/module/Application/src/Application/Controller/GetInfoController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.5">
-              <caret line="44" column="29" selection-start-line="44" selection-start-column="29" selection-end-line="44" selection-end-column="29" />
+            <state vertical-scroll-proportion="-15.615385">
+              <caret line="195" column="0" selection-start-line="195" selection-start-column="0" selection-end-line="195" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -73,14 +115,14 @@
         <option value="$PROJECT_DIR$/module/Application/view/application/relatorio/fup.phtml" />
         <option value="$PROJECT_DIR$/module/Application/view/application/relatorio/evento-pendente.phtml" />
         <option value="$PROJECT_DIR$/module/Application/view/application/relatorio/detalhe-evento.phtml" />
-        <option value="$PROJECT_DIR$/module/Application/src/Application/View/Helper/manifestacao.php" />
-        <option value="$PROJECT_DIR$/module/Application/src/Application/Model/RelatorioModel.php" />
         <option value="$PROJECT_DIR$/module/Application/view/application/relatorio/graphic.phtml" />
-        <option value="$PROJECT_DIR$/module/Application/src/Application/Controller/RelatorioController.php" />
         <option value="$PROJECT_DIR$/module/Application/view/application/relatorio/entada-contato1.phtml" />
-        <option value="$PROJECT_DIR$/module/Application/src/Application/Controller/GetInfoController.php" />
-        <option value="$PROJECT_DIR$/module/Application/view/application/relatorio/entrada-contato.phtml" />
         <option value="$PROJECT_DIR$/module/Application/view/application/relatorio/entrada-contat.phtml" />
+        <option value="$PROJECT_DIR$/module/Application/src/Application/Controller/GetInfoController.php" />
+        <option value="$PROJECT_DIR$/module/Application/src/Application/Model/RelatorioModel.php" />
+        <option value="$PROJECT_DIR$/module/Application/src/Application/View/Helper/manifestacao.php" />
+        <option value="$PROJECT_DIR$/module/Application/src/Application/Controller/RelatorioController.php" />
+        <option value="$PROJECT_DIR$/module/Application/view/application/relatorio/entrada-contato.phtml" />
       </list>
     </option>
   </component>
@@ -204,29 +246,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="application" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scup" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="exploracao-crm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="exploracao-crm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="module" />
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -234,71 +254,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
+              <option name="myItemId" value="View" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="application" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="relatorio" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="exploracao-crm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="exploracao-crm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="module" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Application" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="application" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="index" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="exploracao-crm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="exploracao-crm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="module" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Application" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="application" />
+              <option name="myItemId" value="Helper" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -346,6 +306,36 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Application" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Controller" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="exploracao-crm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="exploracao-crm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="module" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Application" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="config" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -361,24 +351,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="config" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="exploracao-crm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="exploracao-crm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="config" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="autoload" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -541,12 +513,12 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="1334" column="31" selection-start-line="1334" selection-start-column="31" selection-end-line="1334" selection-end-column="31" />
           <folding>
-            <marker date="1472837223599" expanded="true" signature="1935:2020" placeholder="SELECT count..FaberManifest..." />
-            <marker date="1472837223599" expanded="true" signature="12022:12311" placeholder="SELECT count..faberManifest..." />
-            <marker date="1472837223599" expanded="true" signature="23739:23820" placeholder="SELECT count..v_protocolo..." />
-            <marker date="1472837223599" expanded="true" signature="34035:34116" placeholder="SELECT count..v_protocolo..." />
-            <marker date="1472837223599" expanded="true" signature="44621:44941" placeholder="SELECT COUNT..." />
-            <marker date="1472837223599" expanded="true" signature="50832:50980" placeholder="SELECT COUNT..." />
+            <marker date="1472847471176" expanded="true" signature="1935:2020" placeholder="SELECT count..FaberManifest..." />
+            <marker date="1472847471176" expanded="true" signature="12022:12311" placeholder="SELECT count..faberManifest..." />
+            <marker date="1472847471176" expanded="true" signature="23739:23820" placeholder="SELECT count..v_protocolo..." />
+            <marker date="1472847471176" expanded="true" signature="34035:34116" placeholder="SELECT count..v_protocolo..." />
+            <marker date="1472847471176" expanded="true" signature="44621:44941" placeholder="SELECT COUNT..." />
+            <marker date="1472847471176" expanded="true" signature="50832:50980" placeholder="SELECT COUNT..." />
           </folding>
         </state>
       </provider>
@@ -645,21 +617,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/module/Application/src/Application/View/Helper/manifestacao.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0304115">
-          <caret line="75" column="62" selection-start-line="75" selection-start-column="62" selection-end-line="75" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/module/Application/src/Application/Model/RelatorioModel.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.807693">
-          <caret line="332" column="25" selection-start-line="332" selection-start-column="25" selection-end-line="332" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/module/Application/view/application/relatorio/graphic.phtml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-8.423077">
@@ -676,31 +633,64 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/module/Application/src/Application/Controller/GetInfoController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.5">
-          <caret line="44" column="29" selection-start-line="44" selection-start-column="29" selection-end-line="44" selection-end-column="29" />
+        <state vertical-scroll-proportion="-15.615385">
+          <caret line="195" column="0" selection-start-line="195" selection-start-column="0" selection-end-line="195" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/module/Application/src/Application/Model/RelatorioModel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.384615">
+          <caret line="367" column="61" selection-start-line="367" selection-start-column="61" selection-end-line="367" selection-end-column="61" />
+          <folding>
+            <marker date="1472846497128" expanded="true" signature="468:526" placeholder="SELECT count..FaberManifest..." />
+            <marker date="1472846497128" expanded="true" signature="836:1090" placeholder="SELECT count..FaberManifest..." />
+            <marker date="1472846497128" expanded="true" signature="3539:3828" placeholder="SELECT count..faberManifest..." />
+            <marker date="1472846497128" expanded="true" signature="7263:7310" placeholder="SELECT * FRO..v_protocolo..." />
+            <marker date="1472846497128" expanded="true" signature="7576:7652" placeholder="SELECT DISTI..v_inbox_pending_gerencia..." />
+            <marker date="1472846497128" expanded="true" signature="7921:7984" placeholder="SELECT DISTI..v_protocolo..." />
+            <marker date="1472846497128" expanded="true" signature="8229:8292" placeholder="SELECT DISTI..." />
+            <marker date="1472846497128" expanded="true" signature="8538:8599" placeholder="SELECT DISTI..." />
+            <marker date="1472846497128" expanded="true" signature="9670:9729" placeholder="SELECT DISTI..temposAtendimento..." />
+            <marker date="1472846497128" expanded="true" signature="9952:10116" placeholder="SELECT disti..TemposAtendimento..." />
+            <marker date="1472846497128" expanded="true" signature="10358:10493" placeholder="SELECT * FRO..TemposAtendimento..." />
+            <marker date="1472846497128" expanded="true" signature="10728:10971" placeholder="SELECT disti..v_contato..." />
+            <marker date="1472846497128" expanded="true" signature="11204:11776" placeholder="SELECT canal..v_contato..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/module/Application/src/Application/View/Helper/manifestacao.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-16.26923">
+          <caret line="115" column="32" selection-start-line="115" selection-start-column="32" selection-end-line="115" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/module/Application/src/Application/Controller/RelatorioController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1334" column="31" selection-start-line="1334" selection-start-column="31" selection-end-line="1334" selection-end-column="31" />
+        <state vertical-scroll-proportion="-3.9230769">
+          <caret line="1341" column="49" selection-start-line="1341" selection-start-column="49" selection-end-line="1341" selection-end-column="49" />
           <folding>
-            <marker date="1472837223599" expanded="true" signature="1935:2020" placeholder="SELECT count..FaberManifest..." />
-            <marker date="1472837223599" expanded="true" signature="12022:12311" placeholder="SELECT count..faberManifest..." />
-            <marker date="1472837223599" expanded="true" signature="23739:23820" placeholder="SELECT count..v_protocolo..." />
-            <marker date="1472837223599" expanded="true" signature="34035:34116" placeholder="SELECT count..v_protocolo..." />
-            <marker date="1472837223599" expanded="true" signature="44621:44941" placeholder="SELECT COUNT..." />
-            <marker date="1472837223599" expanded="true" signature="50832:50980" placeholder="SELECT COUNT..." />
+            <marker date="1472847471176" expanded="true" signature="1935:2020" placeholder="SELECT count..FaberManifest..." />
+            <marker date="1472847471176" expanded="true" signature="12022:12311" placeholder="SELECT count..faberManifest..." />
+            <marker date="1472847471176" expanded="true" signature="23739:23820" placeholder="SELECT count..v_protocolo..." />
+            <marker date="1472847471176" expanded="true" signature="34035:34116" placeholder="SELECT count..v_protocolo..." />
+            <marker date="1472847471176" expanded="true" signature="44621:44941" placeholder="SELECT COUNT..." />
+            <marker date="1472847471176" expanded="true" signature="50832:50980" placeholder="SELECT COUNT..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/module/Application/view/application/relatorio/entrada-contato123.phtml">
+    <entry file="file://$PROJECT_DIR$/module/Application/view/application/relatorio/entrada-contato.phtml">
+      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3041145">
-          <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
+        <state vertical-scroll-proportion="0.38563326">
+          <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
           <folding />
         </state>
       </provider>

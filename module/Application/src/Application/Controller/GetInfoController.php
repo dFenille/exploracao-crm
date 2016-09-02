@@ -42,7 +42,6 @@ class GetInfoController extends AbstractAppController
         $result.="&ipp=100&page=".$page;
         $returnData = $scupModel->getMetions(array('idMonitoring' => $data['idMonitoring'],'sync' => true),$result);
         
-        print_r($returnData);
 
         /** PAGINACAO DE PARAMETROS **/
         if(!empty($returnData) && !isset($returnData->data->error_code)){
@@ -52,7 +51,7 @@ class GetInfoController extends AbstractAppController
                 $page++;
                 $result.="publickey=".PUBLIC_KEY."&signature=".md5($time.PRIVATE_KEY)."&time=".$time;
 //              $result.='&published_date='.date('Y-m-d')."%2000:00:00|".date('Y-m-d')."%2023:59:59";
-                $result.='&published_date='.$dateStart."|".$dateEnd;
+                $result.='&published_date='.str_replace(' ','%20',$dateStart)."|".str_replace(' ','%20',$dateEnd);
                 $result.="&ipp=100&page=".$page;
                 
                 $returnData = $scupModel->getMetions(array('idMonitoring' => $data['idMonitoring'],'sync' => true),$result);
@@ -63,6 +62,8 @@ class GetInfoController extends AbstractAppController
                     $finish = false;
                 }
             }
+        }else{
+            $return = "teste";
         }
         
         return new JsonModel(array('result'=>$return,'totalPaginas' => $page - 1 ));
@@ -190,5 +191,8 @@ class GetInfoController extends AbstractAppController
         return new JsonModel(array('result'=> $result));
         
     }
+
+
+
     
 }
