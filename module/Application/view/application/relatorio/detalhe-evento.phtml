@@ -49,7 +49,7 @@
 				<div class="number">
 					<span data-counter="counterup" data-value="0" id="manifestacoes-total">0</span>
 				</div>
-				<div class="desc"> </div>
+				<div class="desc"> Eventos </div>
 			</div>
 			<a class="more" href="javascript:;">
 				&nbsp;&nbsp;
@@ -85,8 +85,8 @@
 						<tr role="row" class="heading">
 							<th> # </th>
 							<th> Data Coleta</th>
-							<th> Data Previsao </th>
-							<th> Data Transferencia</th>
+							<th> Data Previsão </th>
+							<th> Data Transferência</th>
 							<th> Tempo horas Previsto</th>
 							<th> Tempo Horas Decorrido</th>
 							<th> Evento</th>
@@ -180,19 +180,6 @@
 <script>
 	function passaValorHidden(element1,element2){
 		element2.val(element1.val());
-	}
-
-	function showModal(idProtocolo){
-
-		$.ajax({
-			url:'<?php echo $this->url('relatorio',array('action'=>'get-orientacao'))?>',
-			type:'POST',
-			data:'idProtocolo='+idProtocolo,
-			success:function (result) {
-				$('#id-text').text(result.orientacao);
-				$('#basic').modal();
-			}
-		})
 	}
 
 	var TableDatatablesAjax = function () {

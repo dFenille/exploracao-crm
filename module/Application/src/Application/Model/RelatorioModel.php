@@ -306,6 +306,43 @@ class RelatorioModel
         return $query;
     }
 
+    public function getIndiceGrafico()
+    {
+        $sql = "SELECT DISTINCT canal FROM temposAtendimento ORDER BY 1 ASC";
+        $query = $this->em->getConnection()->prepare($sql);
+        $query->execute();
+        $result = $query->fetchAll();
+
+        return $result;
+
+    }
+
+    public function getColunasGrafico()
+    {
+        $sql = "SELECT distinct(convert(INT, substring(faixa_hh_uteis,0,3))) as dtts, faixa_hh_uteis FROM TemposAtendimento ORDER BY convert(INT, substring(faixa_hh_uteis,0,3)) asc";
+        $query = $this->em->getConnection()->prepare($sql);
+        $query->execute();
+        $result = $query->fetchAll();
+
+        return $result;
+
+    }
+
+    public function getValoresGrafico($canal = 'telefone')
+    {
+        $sql = "SELECT * FROM TemposAtendimento ta
+                      WHERE ta.canal = '{$canal}'
+                      ORDER BY faixa_hh_uteis DESC";
+        $query = $this->em->getConnection()->prepare($sql);
+        $query->execute();
+        $result = $query->fetchAll();
+
+        return $result;
+
+    }
+
+
+
     public function convertDate($date)
     {
         if(!empty($date)){
@@ -318,7 +355,8 @@ class RelatorioModel
         return $newDate;
     }
 
-    public function limitarTexto($texto, $idProtocolo = 0,$limite = 70){
+    public function limitarTexto($texto, $idProtocolo = 0,$limite = 70)
+    {
         $contador = strlen($texto);
         if ( $contador >= $limite ) {
             $texto = ucfirst(mb_convert_case($texto, MB_CASE_LOWER, "UTF-8"));

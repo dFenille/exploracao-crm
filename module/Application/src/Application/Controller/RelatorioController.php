@@ -1105,7 +1105,7 @@ class RelatorioController extends AbstractAppController
             $sql.= " AND qtde >={$_REQUEST['qtde']} AND qtde <= {$_REQUEST['qtde']}";
         }
 
-        $sql.=" GROUP BY id_protocolo,depto_to, agente_to, evento ";
+        $sql.=" GROUP BY depto_to, agente_to, evento ";
 
         $sql.=")
                 SELECT * , (SELECT COUNT(*) FROM vEventoPendente) AS TotalRecords
@@ -1258,9 +1258,9 @@ class RelatorioController extends AbstractAppController
         foreach($result as $row){
             $records["data"][] = array(
                 $row['cod_mens'],
-                $row['dt_coleta'],
-                $row['dt_previsao'],
-                $row['dt_transf'],
+                $this->ajustaData(substr($row['dt_coleta'], 0, 16)),
+                $this->ajustaData(substr($row['dt_previsao'], 0, 16)),
+                $this->ajustaData(substr($row['dt_transf'], 0, 16)),
                 $row['tempo_fup_horas_previsto'],
                 $row['tempo_fup_horas_decorrido'],
                 $row['evento'],
@@ -1306,6 +1306,35 @@ class RelatorioController extends AbstractAppController
 
     }
 
+
+    public function graphicAction()
+    {
+        $relatorioModel = new RelatorioModel($this->getEntityManagerFaber());
+        $indiceGrafico  = $relatorioModel->getIndiceGrafico();
+        $colunasGraficos = $relatorioModel->getColunasGrafico();
+        $areaComercial  = $relatorioModel->getValoresGrafico('ÁREA COMERCIAL');
+        $emailLivre     = $relatorioModel->getValoresGrafico('EMAIL LIVRE');
+        $faleConosco    = $relatorioModel->getValoresGrafico('FALE CONOSCO');
+        $midiasSociais  = $relatorioModel->getValoresGrafico('MIDIAS SOCIAIS');
+        $reclameAqui    = $relatorioModel->getValoresGrafico('RECLAME AQUI');
+        $telefone       = $relatorioModel->getValoresGrafico('TELEFONE');
+
+
+
+        return new ViewModel(array('indiceGrafico' => $indiceGrafico, 'colunas' => $colunasGraficos,
+                                    'areaComercial'=> $areaComercial, 'emailLivre' => $emailLivre,
+                                    'faleConosco' => $faleConosco,'midiasSociais' => $midiasSociais,
+                                    'reclameAqui' => $reclameAqui,'telefone' => $telefone,
+                                    ));
+    }
+
+
+    public function entradaContatoAction()
+    {
+
+        return new ViewModel();
+    }
+
     public function getOrientacaoAction()
     {
         $request = $this->getRequest();
@@ -1322,5 +1351,24 @@ class RelatorioController extends AbstractAppController
         $orientacao = ucfirst(mb_convert_case($orientacao, MB_CASE_LOWER, "UTF-8"));
         return new JsonModel(array('orientacao'=>$orientacao));
     }
+
+    public function ajustaData($date)
+    {
+        if(!empty($date))
+            $date = explode(' ',$date);
+        else
+            return null;
+
+        $newDate = explode('-',$date[0]);
+        $result = $newDate[2]."/".$newDate[1]."/".$newDate[0];
+
+        $result.=" ".$date[1];
+
+        return $result;
+
+    }
+
+
+
 
 }

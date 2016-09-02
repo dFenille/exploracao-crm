@@ -27,6 +27,9 @@ class manifestacao extends AbstractHelper
     public function getFiltroManifestacao($filtro)
     {
         switch($filtro){
+            case 'canal':
+                $result = 'Canal';
+            break;
             case 'man1':
                 $result = 'Man1';
             break;
@@ -65,5 +68,19 @@ class manifestacao extends AbstractHelper
         return $result;
 
     }
-  
+
+    public function createArrayGraphic($data){
+        $result = array( '0 a 2' => 0,'2 a 6' => 0,'6 a 12' => 0,'12 a 24' => 0,'24 a 36' => 0,'36 a 72' => 0,'72 a +' => 0,);
+
+        foreach($data as $values){
+            $result[$values['faixa_hh_uteis']] = $values['qtde'];
+        }
+
+        $return = null;
+        foreach($result as $key => $values){
+            $return.= $values.",";
+        }
+
+        return $return;
+    }
 }

@@ -1,0 +1,56 @@
+<script type="text/javascript" src="http://www.google.com/jsapi?ext.js"></script>
+<script type="text/javascript">
+    function drawVisualization() {
+        // Create and populate the data table.
+        var data = google.visualization.arrayToDataTable([
+            ['title',
+                <?php foreach($colunas as $value):
+                    echo "'".$value['faixa_hh_uteis']." ' ,";
+                 endforeach; ?>],
+
+            ['Area Comercial',  <?php echo $this->manifestacao()->createArrayGraphic($areaComercial); ?>],
+            ['Email Livre',     <?php echo $this->manifestacao()->createArrayGraphic($emailLivre); ?>],
+            ['Fale Conosco',    <?php echo $this->manifestacao()->createArrayGraphic($faleConosco);?>],
+            ['Midias Sociais',  <?php echo $this->manifestacao()->createArrayGraphic($midiasSociais); ?>],
+            ['Reclame Aqui',    <?php echo $this->manifestacao()->createArrayGraphic($reclameAqui); ?>],
+            ['Telefone',        <?php echo $this->manifestacao()->createArrayGraphic($telefone); ?>],
+
+
+        ]);
+
+        // Create and draw the visualization.
+        new google.visualization.BarChart(document.getElementById('visualization')).
+            draw(data, {
+                title: "Tempo Atendimento em faixas de hora",
+                height:400,
+                vAxis: {
+                    title: ""
+                },
+                isStacked: 'percent',
+                hAxis: {
+                    title: ""
+                },
+                series: {
+                    0:{color:'#87CEFA'},
+                    1:{color:'#FFC0CB'},
+                    2:{color:'#7FFFD4'},
+                    3:{color:'#F0E68C'},
+                    4:{color:'#808080'},
+                    5:{color:'#D2B48C'},
+                }
+
+            });
+    }
+
+    google.load("visualization", "1", {
+        packages: ["corechart"]
+    });
+    google.setOnLoadCallback(drawVisualization);
+
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+       <div id="visualization"></div>
+    </div>
+</div>
