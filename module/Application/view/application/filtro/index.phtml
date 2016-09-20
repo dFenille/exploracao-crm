@@ -1,0 +1,430 @@
+
+<link href="<?php echo $this->basePath('assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css')?>" rel="stylesheet" type="text/css" />
+
+<script src="<?php echo $this->basePath('assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js')?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/global/plugins/bootstrap-daterangepicker/moment.min.js')?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js')?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/global/scripts/app.min.js')?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/pages/scripts/components-date-time-pickers.min.js')?>" type="text/javascript"></script>
+
+<div class="row">
+	<div class="col-md-6" id="result-filter">
+		<div class="portlet light">
+			<i style="font-size: 11px">Localizadas: <b><?php echo $totalConversas[0]['totalConversas']?> conversas</b> </i>
+			<?php $idconversa = 0;?>
+			<?php $hidden = false; ?>
+			<?php foreach ($conversas as $values):?>
+				<?php if($idconversa == $values['id_conversa']): ?>
+					<?php $hidden = true; ?>
+				<?php else: ?>
+					<?php $idconversa = $values['id_conversa']; ?>
+					<?php $hidden = false; ?>
+				<?php endif;?>
+
+				<hr>
+				<div class="row">
+					<div class="col-xs-12 col-sm-2 col-md-2 <?php echo (empty($values['post']) && $hidden == true)?'col-md-offset-2 col-sm-offset-2':(($hidden==true)?'col-md-offset-1  col-sm-offset-1':'')?>">
+
+						<?php echo $this->mentions()->getTipoCanal($values['canal'],$this->basePath());?>
+						<img src="<?php echo $values['foto_perfil'] ?>" class="<?php echo (!empty($values['post']) && $hidden == true)?'img-profile-resposta':'img-responsive margin-left-img-profile';?>">
+						<h3 style="margin-left: 15px;"  <?php  echo ($hidden == true)?'class="hidden"':''?>><?php echo $idconversa ?></h3>
+						<?php if(!empty($values['post'])): ?>
+							<div class="row" style="margin: 10px 10px;">
+								<a href="<?php echo $values['permalink']?>" target="_blank" class="btn btn-light-grey btn-sm-custom">Ver</a>
+							</div>
+							<div class="row" style="margin-left: 10px;">
+								<button type="button" class="btn btn-light-grey btn-sm-custom"  data-toggle="modal" href="#basic">Avaliar</button>
+							</div>
+						<?php endif; ?>
+					</div>
+					<div class="col-xs-12 <?php echo (empty($values['post']) && $hidden == true)?'col-md-8 col-sm-8':(($hidden==true)?'col-md-9 col-sm-9' :'col-md-10 col-sm-10')?>">
+						<?php if(!empty($values['post']) && $hidden == false): ?>
+							<button type="button" class="btn btn-light-blue btn-sm-custom">Elogio produto</button>
+							<button type="button" class="btn btn-light-blue btn-sm-custom">Dúvida produto</button>
+							<div class="pull-right">
+								<div class="display-inline"> <?php echo ($values['sentimento']== 'positive')?"<img src='{$this->basePath('img/happy.png')}'  style='width: 35px height: 35px;'>":"<img src='{$this->basePath('img/happy.png')}' style='width: 20px; height: 20px;'>"?></div>
+								<div class="display-inline"> <?php echo ($values['sentimento']== 'neutral')?"<img src='{$this->basePath('img/sceptic.png')}'  style='width: 35px; height: 35px;'>":"<img src='{$this->basePath('img/sceptic.png')}' style='width: 20px; height: 20px;'>"?></div>
+								<div class="display-inline"> <?php echo ($values['sentimento']== 'negative')?"<img src='{$this->basePath('img/sad.png')}'  style='width: 35px; height: 35px;'>":"<img src='{$this->basePath('img/sad.png')}' style='width: 20px; height: 20px;'>"?></div>
+								<div class="display-inline"> <?php echo ($values['sentimento']== 'mixed')?"<img src='{$this->basePath('img/confused.png')}'  style='width: 35px; height: 35px;'>":"<img src='{$this->basePath('img/confused.png')}' style='width: 20px; height: 20px;'>"?></div>
+							</div>
+							<hr>
+						<?php endif;?>
+						<?php if(empty($values['post'])): ?>
+							<button type="button" class="btn btn-light-yellow btn-sm-custom">Resposta Faber-Castell</button>
+							<hr>
+						<?php endif;?>
+
+
+						<?php if(!empty($values['post'])): ?>
+							<p><?php echo $values['post']?></p>
+						<?php else: ?>
+							<p><?php echo $values['resp']?></p>
+						<?php endif; ?>
+						<p style="font-size: 9px;">por <?php echo $values['nome']?> em <?php echo $values['dt_post']?> às <?php echo $values['hh_post']?> </p>
+					</div>
+
+				</div>
+
+			<?php endforeach;?>
+		</div>
+
+	</div>
+	<div class="col-md-6">
+		<div class="portlet light">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-magnifier"></i>
+					<span class="caption-subject bold uppercase"> Filtros</span>
+
+				</div>
+				<div class="actions">
+					<a href="javascript:void(0);" class="btn btn-circle btn-default" onclick="submitFiltros()">
+						<i class="fa fa-search"></i> Filtrar
+					</a>
+
+				</div>
+			</div>
+			<div class="row">
+				<form method="post" id="filtros">
+					<div class="col-md-6">
+						<p>Intervalo dos postos <i style="font-size: 11px;cursor: pointer" onclick="alert()">Limpar filtros</i></p>
+
+						<div class="form-group">
+							<div class="input-group date-picker input-daterange" data-date="10/11/2012" data-date-format="dd/mm/yyyy">
+								<input type="text" class="form-control" name="dataIni">
+								<span class="input-group-addon"> ATÉ </span>
+								<input type="text" class="form-control" name="dataFim">
+							</div>
+								<!-- /input-group -->
+						</div>
+						<div class="form-group">
+							<div class="row">
+								<label class="control-label col-md-2">Exibir</label>
+								<div class="col-md-4">
+									<input class="form-control" id="maxConversa" name="maxConversa" type="text" maxlength="4" >
+								</div>
+								<label class="control-label col-md-2">conversas</label>
+							</div>
+						</div>
+						<p><b>Canal</b></p>
+						<div class="form-group">
+							<div class="radio-list">
+								<label>
+									<input type="radio" name="tipoCanal" value="1" checked> Todos
+								</label>
+								<label>
+									<input type="radio" name="tipoCanal" value="2"> Selecionados abaixo
+								</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="checkbox-list">
+								<label>
+									<input type="checkbox" name="canais[2]"> FB Mural
+								</label>
+								<label>
+									<input type="checkbox" name="canais[1]"> FB Mensagens
+								</label>
+								<label>
+									<input type="checkbox" name="canais[6]"> Twitter
+								</label>
+								<label>
+									<input type="checkbox" name="canais[4]"> Instagram
+								</label>
+
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-9">
+									<input type="text" class="form-control" placeholder="Nome da Pessoa" name="nome_pessoa">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-9">
+									<input type="text" class="form-control" placeholder="Post" name="conteudo_post">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-9">
+									<input type="text" class="form-control" placeholder="Resposta" name="conteudo_resposta">
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="col-md-6">
+						<h5><b>Sentimento</b></h5>
+						<div class="form-group">
+							<div class="checkbox-list">
+								<label>
+									<input type="checkbox" name="sentimento[positive]"> Positivo
+								</label>
+								<label>
+									<input type="checkbox" name="sentimento[negative]"> Negativo
+								</label>
+								<label>
+									<input type="checkbox" name="sentimento[neutral]"> Neutro
+								</label>
+								<label>
+									<input type="checkbox" name="sentimento[mixed]"> Misto
+								</label>
+
+							</div>
+						</div>
+						<div class="form-group">
+							<h5><b>TAGS</b></h5>
+							<div style="max-height: 200px;overflow-y: auto;border-style: groove;padding: 5px 10px;">
+								<div class="radio-list">
+									<label>
+										<input type="checkbox" name="optionsRadios['todos']" id="optionsRadios2" value="0"> Todas
+									</label>
+									<?php foreach ($tags as $values):?>
+										<label>
+											<input type="checkbox" name="optionsRadios[]" value="<?php echo $values->getIdTag();?>" > <?php echo $values->getTag()?>
+										</label>
+									<?php endforeach;?>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="row">
+								<label class="control-label col-md-4">Conversas com até</label>
+								<div class="col-md-3">
+									<input class="form-control" id="maxConversa" type="text" maxlength="2" >
+								</div>
+								<label class="control-label col-md-4">interações</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<h5><b>Ordem</b></h5>
+							<div class="radio-list">
+								<label>
+									<input type="radio" name="orderby" value="canal" checked> Canal
+								</label>
+								<label>
+									<input type="radio" name="orderby" value="asc"> Data Ascendente
+								</label>
+								<label>
+									<input type="radio" name="orderby" value="desc"> Data Decrescente
+								</label>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="modal fade" id="basic" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h4 class="modal-title">Avaliação</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-offset-4 col-md-8">
+						<label class="pull-right">Score <label style="font-size: 30px;">00</label> Meta<label style="font-size: 30px;">90</label></label>
+					</div>
+					<div class="col-md-12">
+						<div class="form-group">
+							<div class="radio-list">
+								<label>
+									<input type="radio" name="questaoAvaliacao" value="1" checked> Ok, caso não tratado (não precisava mesmo)
+								</label>
+								<label>
+									<input type="radio" name="questaoAvaliacao" value="2"> ! Deixou de tratar caso que deveria tratar - zerar a nota
+								</label>
+								<label>
+									<input type="radio" name="questaoAvaliacao" value="3"> Tratou o caso
+								</label>
+							</div>
+						</div>
+
+					</div>
+					<div id="questao1" >
+						<div class="col-md-12" style="border-bottom: solid 1px #d9dada;    margin-bottom: 5px;">
+							<div class="col-md-6">
+								<label>Tratamento</label>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<div class="radio-list">
+										<label class="radio-inline">
+											<input type="radio" name="avaliacao1" value="1"> 1</label>
+										<label class="radio-inline">
+											<input type="radio" name="avaliacao1" value="2"> 2</label>
+										<label class="radio-inline">
+											<input type="radio" name="avaliacao1" value="3"> 3</label>
+
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<div class="radio-list">
+										<label class="radio-inline">
+											<input type="radio" name="avaliacao1" value="4" checked> N/A
+										</label>
+									</div>
+								</div>
+							</div>
+							</hr>
+						</div>
+					</div>
+					<div id="questao2">
+						<div class="col-md-12" style="border-bottom: solid 1px #d9dada;    margin-bottom: 5px;">
+							<div class="col-md-6">
+								<label>Demanda/ Expectativa</label>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<div class="radio-list">
+										<label class="radio-inline">
+											<input type="radio" name="avaliacao2" value="1"> 1</label>
+										<label class="radio-inline">
+											<input type="radio" name="avaliacao2" value="2"> 2</label>
+										<label class="radio-inline">
+											<input type="radio" name="avaliacao2" value="3"> 3</label>
+
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<div class="radio-list">
+										<label class="radio-inline">
+											<input type="radio" name="avaliacao2" value="4" checked> N/A
+										</label>
+									</div>
+								</div>
+							</div>
+							</hr>
+						</div>
+					</div>
+					<div id="questao3">
+						<div class="col-md-12" style="border-bottom: solid 1px #d9dada;    margin-bottom: 5px;">
+							<div class="col-md-6">
+								<label>Procedimentos</label>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<div class="radio-list">
+										<label class="radio-inline">
+											<input type="radio" name="avaliacao3" value="1"> 1</label>
+										<label class="radio-inline">
+											<input type="radio" name="avaliacao3" value="2"> 2</label>
+										<label class="radio-inline">
+											<input type="radio" name="avaliacao3" value="3"> 3</label>
+
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<div class="radio-list">
+										<label class="radio-inline">
+											<input type="radio" name="avaliacao3" value="4" checked> N/A
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="questao4">
+						<div class="col-md-12" style="border-bottom: solid 1px #d9dada;    margin-bottom: 5px;">
+						<div class="col-md-6">
+							<label>Texto</label>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<div class="radio-list">
+									<label class="radio-inline">
+										<input type="radio" name="avaliacao4" value="1"> 1</label>
+									<label class="radio-inline">
+										<input type="radio" name="avaliacao4" value="2"> 2</label>
+									<label class="radio-inline">
+										<input type="radio" name="avaliacao4" value="3"> 3</label>
+
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<div class="radio-list">
+									<label class="radio-inline">
+										<input type="radio" name="avaliacao4" value="4" checked> N/A
+									</label>
+								</div>
+							</div>
+						</div>
+						</div>
+					</div>
+					<div id="questao5">
+						<div class="col-md-12"">
+						<div class="col-md-6">
+							<label>Classificação e registro</label>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<div class="radio-list">
+									<label class="radio-inline">
+										<input type="radio" name="avaliacao5" value="1"> 1</label>
+									<label class="radio-inline">
+										<input type="radio" name="avaliacao5" value="2"> 2</label>
+									<label class="radio-inline">
+										<input type="radio" name="avaliacao5" value="3"> 3</label>
+
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<div class="radio-list">
+									<label class="radio-inline">
+										<input type="radio" name="avaliacao5" value="4" checked> N/A
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn green">Salvar</button>
+				<button type="button" class="btn dark btn-outline" data-dismiss="modal">Fechar</button>
+
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+
+
+<script>
+	function submitFiltros(){
+		$.ajax({
+			type:'POST',
+			url:'<?php echo $this->url('filtro',array('action'=>'resultado-pesquisa'))?>',
+			data:$('#filtros').serialize(),
+			success:function(result){
+				$('#result-filter').html(result);
+			}
+		})
+
+	}
+
+</script>

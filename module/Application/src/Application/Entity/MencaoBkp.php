@@ -5,33 +5,26 @@ namespace Application\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Mencao
+ * MencaoBkp
  *
- * @ORM\Table(name="mencao", indexes={@ORM\Index(name="parent_id", columns={"parent_id"}), @ORM\Index(name="id_mention", columns={"id_mention"}), @ORM\Index(name="sentimento", columns={"sentimento"}), @ORM\Index(name="dt_envio", columns={"dt_envio"}), @ORM\Index(name="tipo_captura", columns={"tipo_captura"})})
+ * @ORM\Table(name="mencao_bkp")
  * @ORM\Entity
  */
-class Mencao
+class MencaoBkp
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id_mencao", type="bigint", nullable=false)
+     * @ORM\Column(name="id_mencao_aux", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idMencao;
+    private $idMencaoAux;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="id_mention", type="bigint", nullable=false)
-     */
-    private $idMention;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id_monitoring", type="integer", nullable=true)
+     * @ORM\Column(name="id_monitoring", type="integer", nullable=false)
      */
     private $idMonitoring;
 
@@ -101,9 +94,9 @@ class Mencao
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dt_process", type="datetime", nullable=true)
+     * @ORM\Column(name="dt_proccess", type="datetime", nullable=true)
      */
-    private $dtProcess;
+    private $dtProccess;
 
     /**
      * @var integer
@@ -112,54 +105,16 @@ class Mencao
      */
     private $codMens;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dt_insert", type="datetime", nullable=false)
-     */
-    private $dtInsert = 'CURRENT_TIMESTAMP';
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dt_update", type="datetime", nullable=true)
-     */
-    private $dtUpdate;
-
 
 
     /**
-     * Get idMencao
+     * Get idMencaoAux
      *
      * @return integer
      */
-    public function getIdMencao()
+    public function getIdMencaoAux()
     {
-        return $this->idMencao;
-    }
-
-    /**
-     * Set idMention
-     *
-     * @param integer $idMention
-     *
-     * @return Mencao
-     */
-    public function setIdMention($idMention)
-    {
-        $this->idMention = $idMention;
-
-        return $this;
-    }
-
-    /**
-     * Get idMention
-     *
-     * @return integer
-     */
-    public function getIdMention()
-    {
-        return $this->idMention;
+        return $this->idMencaoAux;
     }
 
     /**
@@ -167,7 +122,7 @@ class Mencao
      *
      * @param integer $idMonitoring
      *
-     * @return Mencao
+     * @return MencaoBkp
      */
     public function setIdMonitoring($idMonitoring)
     {
@@ -191,7 +146,7 @@ class Mencao
      *
      * @param integer $parentId
      *
-     * @return Mencao
+     * @return MencaoBkp
      */
     public function setParentId($parentId)
     {
@@ -215,7 +170,7 @@ class Mencao
      *
      * @param integer $idUsuarioFacebook
      *
-     * @return Mencao
+     * @return MencaoBkp
      */
     public function setIdUsuarioFacebook($idUsuarioFacebook)
     {
@@ -239,7 +194,7 @@ class Mencao
      *
      * @param integer $idUsuarioInstagram
      *
-     * @return Mencao
+     * @return MencaoBkp
      */
     public function setIdUsuarioInstagram($idUsuarioInstagram)
     {
@@ -263,7 +218,7 @@ class Mencao
      *
      * @param string $mensagem
      *
-     * @return Mencao
+     * @return MencaoBkp
      */
     public function setMensagem($mensagem)
     {
@@ -287,7 +242,7 @@ class Mencao
      *
      * @param string $sentimento
      *
-     * @return Mencao
+     * @return MencaoBkp
      */
     public function setSentimento($sentimento)
     {
@@ -311,7 +266,7 @@ class Mencao
      *
      * @param \DateTime $dtEnvio
      *
-     * @return Mencao
+     * @return MencaoBkp
      */
     public function setDtEnvio($dtEnvio)
     {
@@ -335,7 +290,7 @@ class Mencao
      *
      * @param \DateTime $dtColetaScup
      *
-     * @return Mencao
+     * @return MencaoBkp
      */
     public function setDtColetaScup($dtColetaScup)
     {
@@ -359,7 +314,7 @@ class Mencao
      *
      * @param string $tipoCaptura
      *
-     * @return Mencao
+     * @return MencaoBkp
      */
     public function setTipoCaptura($tipoCaptura)
     {
@@ -383,7 +338,7 @@ class Mencao
      *
      * @param string $permalink
      *
-     * @return Mencao
+     * @return MencaoBkp
      */
     public function setPermalink($permalink)
     {
@@ -403,27 +358,27 @@ class Mencao
     }
 
     /**
-     * Set dtProcess
+     * Set dtProccess
      *
-     * @param \DateTime $dtProcess
+     * @param \DateTime $dtProccess
      *
-     * @return Mencao
+     * @return MencaoBkp
      */
-    public function setDtProcess($dtProcess)
+    public function setDtProccess($dtProccess)
     {
-        $this->dtProcess = $dtProcess;
+        $this->dtProccess = $dtProccess;
 
         return $this;
     }
 
     /**
-     * Get dtProcess
+     * Get dtProccess
      *
      * @return \DateTime
      */
-    public function getDtProcess()
+    public function getDtProccess()
     {
-        return $this->dtProcess;
+        return $this->dtProccess;
     }
 
     /**
@@ -431,7 +386,7 @@ class Mencao
      *
      * @param integer $codMens
      *
-     * @return Mencao
+     * @return MencaoBkp
      */
     public function setCodMens($codMens)
     {
@@ -448,53 +403,5 @@ class Mencao
     public function getCodMens()
     {
         return $this->codMens;
-    }
-
-    /**
-     * Set dtInsert
-     *
-     * @param \DateTime $dtInsert
-     *
-     * @return Mencao
-     */
-    public function setDtInsert($dtInsert)
-    {
-        $this->dtInsert = $dtInsert;
-
-        return $this;
-    }
-
-    /**
-     * Get dtInsert
-     *
-     * @return \DateTime
-     */
-    public function getDtInsert()
-    {
-        return $this->dtInsert;
-    }
-
-    /**
-     * Set dtUpdate
-     *
-     * @param \DateTime $dtUpdate
-     *
-     * @return Mencao
-     */
-    public function setDtUpdate($dtUpdate)
-    {
-        $this->dtUpdate = $dtUpdate;
-
-        return $this;
-    }
-
-    /**
-     * Get dtUpdate
-     *
-     * @return \DateTime
-     */
-    public function getDtUpdate()
-    {
-        return $this->dtUpdate;
     }
 }

@@ -1,0 +1,64 @@
+<link href="<?php echo $this->basePath('assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')?>" rel="stylesheet" type="text/css" />
+<div class="row">
+	<div class="col-md-7">
+		<div class="portlet box blue-hoki ">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa a-gift"></i> <?php echo $this->translate("Editar resposta automática")?>
+				</div>
+			</div>
+			<div class="portlet-body form">
+
+				<?php $form->prepare();
+				$form->setAttribute('action', '');
+				$this->formElementErrors()
+					->setMessageOpenFormat('<span class="help-block">')
+					->setMessageSeparatorString('<br>')
+					->setMessageCloseString('</span>')
+					->render($form);
+				echo $this->form()->openTag($form);
+				?>
+				<div class="form-body">
+					<?php if($success):?>
+						<ul class="alert alert-success">
+							<li><?php echo $success?></li>
+						</ul>
+					<?php endif;?>
+
+
+					<div class="row">
+						<div class="form-group col-md-4">
+							<label class="control-label"><?php echo $this->translate("Verbete")?></label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-list-alt"></i></span>
+								<?php echo $this->formRow($form->get('verbete'));?>
+							</div>
+						</div>
+						<div class="form-group col-md-9">
+							<label class="control-label"><?php echo $this->translate("Glossário")?></label>
+							<?php echo $this->formRow($form->get('glossario'));?>
+						</div>
+
+					</div>
+
+
+				</div>
+				<div class="form-actions right">
+
+					<?php echo $this->formHidden($form->get('csrf'));?>
+					<a class="btn red" href="<?php echo $this->url('relatorio',array('action'=>'glossary'))?>"><?php echo $this->translate("Voltar")?></a>
+					<?php if(!$success):?>
+						<?php echo $this->formRow($form->get('submit'));?>
+					<?php else:?>
+						<a href="<?php echo $this->url('relatorio',array('action'=>'glossary'))?>" class="btn green"><?php echo $this->translate('Voltar')?></a>
+					<?php endif;?>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="<?php echo $this->basePath('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js');?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/pages/scripts/components-date-time-pickers.min.js') ?>" type="text/javascript"></script>
+        

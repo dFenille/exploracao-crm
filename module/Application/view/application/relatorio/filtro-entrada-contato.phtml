@@ -1,0 +1,87 @@
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js"></script>
+
+<div id="grafico-teste" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<script>
+	$(function () {
+		$('#grafico-teste').highcharts({
+			chart: {
+				type: 'area'
+			},
+			credits:{
+				enable:false
+			},
+			title: {
+				text: ' '
+			},
+			subtitle: {
+				text: ''
+			},
+			xAxis: {
+				categories: [<?php  echo $this->manifestacao()->createArrayGraphicEnt($filtro)?>],
+				lineWidth: 0,
+				minorGridLineWidth: 0,
+				lineColor: 'transparent',
+				labels: {
+					enabled: false
+				},
+				minorTickLength: 0,
+				tickLength: 0,
+			},
+			yAxis: {
+				title: {
+					text: 'Qtd'
+				},
+				labels: {
+					formatter: function () {
+						return this.value ;
+					}
+				}
+			},
+			tooltip: {
+				shared: true,
+				valueSuffix: ' Qtd'
+			},
+			plotOptions: {
+				area: {
+					stacking: 'normal',
+					lineColor: '#666666',
+					lineWidth: 1,
+					marker: {
+						<?php if(intval($filtro['filtro']) >= 2):?>
+						 	enabled: false,
+						<?php endif;?>
+						lineWidth: 1,
+						lineColor: '#666666'
+					}
+				}
+			},
+			series: [{
+				name: 'Area Comercial HTH',
+				data: [<?php echo $this->manifestacao()->prepareArrayGraphicEnt($areaComercial,$filtro);?>]
+			}, {
+				name: 'Email Livre',
+				data: [<?php echo $this->manifestacao()->prepareArrayGraphicEnt($emailLivre,$filtro);?>]
+			}, {
+				name: 'Fale Conosco',
+				data: [<?php echo $this->manifestacao()->prepareArrayGraphicEnt($faleConosco,$filtro);?>]
+			}, {
+				name: 'Telefone',
+				data: [<?php echo $this->manifestacao()->prepareArrayGraphicEnt($telefone,$filtro);?>]
+			},]
+		});
+	});
+
+
+
+	jQuery(document).ready(function() {
+		$('select').chosen({
+			no_results_text: "Oops, Nao encontramos nada!"
+		});
+
+	});
+</script>

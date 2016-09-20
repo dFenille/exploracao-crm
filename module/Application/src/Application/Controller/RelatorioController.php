@@ -9,6 +9,8 @@
 namespace Application\Controller;
 
 
+use Application\Form\CartasEmailForm;
+use Application\Form\GlossaryForm;
 use Application\Model\RelatorioModel;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -1307,7 +1309,7 @@ class RelatorioController extends AbstractAppController
     }
 
 
-    public function graphicAction()
+    public function tempoAtendimentoAction()
     {
         $relatorioModel = new RelatorioModel($this->getEntityManagerFaber());
         $indiceGrafico  = $relatorioModel->getIndiceGrafico();
@@ -1338,26 +1340,398 @@ class RelatorioController extends AbstractAppController
         $faleConosco  = $relatorioModel->getValoresGraficoEnt('FALE CONOSCO HTH');
         $telefone  = $relatorioModel->getValoresGraficoEnt('TELEFONE');
 
-
         return new ViewModel(array('indiceGrafico' => $indiceGrafico,'areaComercial' => $areaComercial,
                                     'emailLivre' => $emailLivre,'faleConosco' => $faleConosco,
                                     'telefone' => $telefone ));
     }
 
-    public function testeAction()
+
+    public function filtroEntradaContatoAction()
     {
-        $mes = 8;
-        $ano = 2016;
-        $totalDia = cal_days_in_month(CAL_GREGORIAN, $mes, $ano);
-        $dias=null;
-        for($i=1;$i<=$totalDia;$i++){
-            $dias.=$i.",";
+        $request = $this->getRequest();
+        $data = $request->getQuery();
 
-        }
 
-        print_r($dias);
+        $relatorioModel = new RelatorioModel($this->getEntityManagerHth());
+        $indiceGrafico  = $relatorioModel->getIndiceGraficoEntradaCtt();
+        $areaComercial  = $relatorioModel->getValoresGraficoEnt('ÁREA COMERCIAL HTH',array('filtro'=>$data['filtro'],'qtde' => $data['qtde']));
+        $emailLivre  = $relatorioModel->getValoresGraficoEnt('EMAIL LIVRE',array('filtro'=>$data['filtro'],'qtde' => $data['qtde']));
+        $faleConosco  = $relatorioModel->getValoresGraficoEnt('FALE CONOSCO HTH',array('filtro'=>$data['filtro'],'qtde' => $data['qtde']));
+        $telefone  = $relatorioModel->getValoresGraficoEnt('TELEFONE',array('filtro'=>$data['filtro'],'qtde' => $data['qtde']));
+
+        $filtro = array('filtro'=>$data['filtro'],'qtde' => $data['qtde']);
+
+        $viewModel = new ViewModel();
+        $viewModel->setTerminal(true)->setVariables(array('indiceGrafico' => $indiceGrafico,'areaComercial' => $areaComercial,
+            'emailLivre' => $emailLivre,'faleConosco' => $faleConosco,
+            'telefone' => $telefone,'filtro'=>$filtro ));
+        return $viewModel;
+    }
+
+    public function cartaEmailAction()
+    {
 
         return new ViewModel();
+    }
+
+    public function listCartaEmailAction()
+    {
+        $relatorioModel = new RelatorioModel($this->getEntityManagerFaber());
+
+        $sql = "SELECT count(*) as TotalRecords FROM cartas_email WHERE 1=1 ";
+
+        if(isset($_REQUEST['carta']) && !empty($_REQUEST['carta'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['carta'],'carta',true);
+        }
+
+        if(isset($_REQUEST['descr']) && !empty($_REQUEST['descr'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['descr'],'descr',true);
+        }
+
+        if(isset($_REQUEST['modelo']) && !empty($_REQUEST['modelo'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['modelo'],'modelo',true);
+        }
+
+        if(isset($_REQUEST['status-filtro']) && !empty($_REQUEST['status-filtro'])){
+            $sql.= $relatorioModel->montaWhereSingular(0,'ativo');
+        }
+
+
+        $query = $this->getEntityManagerHth()->getConnection()->prepare($sql);
+        $query->execute();
+        $totalDados = $query->fetchAll();
+
+        if(empty($totalDados))
+            $totalDados = 0;
+        else
+            $totalDados = $totalDados[0]['TotalRecords'];
+
+
+        $iTotalRecords = $totalDados;
+        $iDisplayLength = intval($_REQUEST['length']);
+        $iDisplayLength = $iDisplayLength < 0 ? $iTotalRecords : $iDisplayLength;
+        $iDisplayStart = intval($_REQUEST['start']);
+        $sEcho = intval($_REQUEST['draw']);
+
+
+        $order = $_REQUEST['order'];
+
+        $orderbyColumn = $order[0]['column'];
+        $orderbyDir    = $order[0]['dir'];
+
+        $sql = "
+                DECLARE @FirstRow INT, @LastRow INT
+                    SELECT  @FirstRow   = ((({$_REQUEST['start']}+1) - 1)) + 1,
+                            @LastRow    = ((({$_REQUEST['start']}+1) - 1)) + {$_REQUEST['length']};
+                    WITH cartaEmail AS
+                    (
+
+                        SELECT id,carta,descr,modelo,ativo,
+                            row_number() OVER (ORDER BY {$this->getFilterCartaEmail($orderbyColumn)} {$orderbyDir}) AS RowNumber,
+                               COUNT(*) OVER () AS TotalRecords
+                        FROM cartas_email
+                        where 1=1  ";
+
+        if(isset($_REQUEST['carta']) && !empty($_REQUEST['carta'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['carta'],'carta',true);
+        }
+
+        if(isset($_REQUEST['descr']) && !empty($_REQUEST['descr'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['descr'],'descr',true);
+        }
+
+        if(isset($_REQUEST['modelo']) && !empty($_REQUEST['modelo'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['modelo'],'modelo',true);
+        }
+
+        if(isset($_REQUEST['status-filtro']) && !empty($_REQUEST['status-filtro'])){
+            $sql.= $relatorioModel->montaWhereSingular(0,'ativo');
+        }
+
+        $sql.=")
+                SELECT * , (SELECT COUNT(*) FROM cartaEmail) AS TotalRecords
+                        FROM cartaEmail
+                        WHERE RowNumber BETWEEN @FirstRow AND @LastRow
+                        ORDER BY RowNumber ASC";
+
+//        print_r($sql);
+        $query = $this->getEntityManagerHth()->getConnection()->prepare($sql);
+        $query->execute();
+
+        $result = $query->fetchAll();
+
+        $records = array();
+        $records["data"] = array();
+
+        foreach($result as $row){
+            $records["data"][] = array(
+                $row['id'],
+                $row['carta'],
+                $row['descr'],
+                $relatorioModel->limitarTexto($row['modelo'],$row['id']),
+//                $row['ativo'],
+                "<a href='{$this->url()->fromRoute('relatorio',array('action'=>'edita-carta-email','id'=>$row['id']))}' class='btn green'> Editar </a>",
+           );
+        }
+
+
+
+        if (isset($_REQUEST["customActionType"]) && $_REQUEST["customActionType"] == "group_action") {
+            $records["customActionStatus"] = "OK"; // pass custom message(useful for getting status of group actions)
+            $records["customActionMessage"] = "Group action successfully has been completed. Well done!"; // pass custom message(useful for getting status of group actions)
+        }
+
+        $records["draw"] = $sEcho;
+        $records["recordsTotal"] = $iTotalRecords;
+        $records["recordsFiltered"] = $iTotalRecords;
+        $records["totalContatos"] = count($result);
+
+        return new JsonModel($records);
+    }
+
+
+    protected function getFilterCartaEmail($idColumn){
+
+        $filter = array(1 => 'carta',
+                        2 => 'descr',
+                        3 => 'modelo',
+            );
+
+        return $filter[$idColumn];
+
+    }
+
+
+
+    public function addCartaEmailAction()
+    {
+        $id = $this->params()->fromRoute('id',0);
+        $request = $this->getRequest();
+        $form = new CartasEmailForm();
+        $success = null;
+
+        if($request->isPost()){
+            $data = $request->getPost();
+            $form->setData($data);
+            if($form->isValid()){
+                $relatorioModel = new RelatorioModel($this->getEntityManagerHth());
+                $relatorioModel->addCartaEmail($data);
+                $success = "Resposta automática adicionada com sucesso";
+            }
+        }
+
+
+        return new ViewModel(array('form'=>$form,'success'=>$success));
+    }
+
+    public function editaCartaEmailAction()
+    {
+        $id = $this->params()->fromRoute('id',0);
+        $request = $this->getRequest();
+        $form = new CartasEmailForm();
+        $relatorioModel = new RelatorioModel($this->getEntityManagerHth());
+        $relatorioModel->setCartaEmail($id);
+        $populateValues = $relatorioModel->populateCartaEmail();
+
+        if(!empty($populateValues))
+            $form->populateValues($populateValues);
+
+        $success = null;
+
+        if($request->isPost()){
+            $data = $request->getPost();
+            $form->setData($data);
+            if($form->isValid()){
+                $relatorioModel->updateCartaEmail($data,$id);
+                $success = "Resposta automática atualizada com sucesso";
+            }
+        }
+
+
+        return new ViewModel(array('form'=>$form,'success'=>$success));
+    }
+
+
+    public function getModeloCartaEmailAction()
+    {
+        $id = $this->params()->fromRoute('id',0);
+        $relatorioModel = new RelatorioModel($this->getEntityManagerHth());
+        $cartaEmail = $relatorioModel->setCartaEmail($id)->getCartaEmail();
+
+        if(!empty($cartaEmail))
+            $modelo = $cartaEmail->modelo;
+        else
+            $modelo = null;
+
+
+        return new JsonModel(array('modelo'=>$modelo));
+
+    }
+
+    public function glossaryAction()
+    {
+        return new ViewModel(array());
+    }
+
+    public function listGlossaryAction()
+    {
+
+        $relatorioModel = new RelatorioModel($this->getEntityManagerFaber());
+
+        $sql = "SELECT count(*) as TotalRecords FROM glossary_email WHERE 1=1 ";
+
+        if(isset($_REQUEST['verbete']) && !empty($_REQUEST['verbete'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['verbete'],'verbete',true);
+        }
+
+//        if(isset($_REQUEST['glossario']) && !empty($_REQUEST['glossario'])){
+//            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['glossario'],'glossario',true);
+//        }
+
+        $query = $this->getEntityManagerHth()->getConnection()->prepare($sql);
+        $query->execute();
+        $totalDados = $query->fetchAll();
+
+        if(empty($totalDados))
+            $totalDados = 0;
+        else
+            $totalDados = $totalDados[0]['TotalRecords'];
+
+
+        $iTotalRecords = $totalDados;
+        $iDisplayLength = intval($_REQUEST['length']);
+        $iDisplayLength = $iDisplayLength < 0 ? $iTotalRecords : $iDisplayLength;
+        $iDisplayStart = intval($_REQUEST['start']);
+        $sEcho = intval($_REQUEST['draw']);
+
+
+        $order = $_REQUEST['order'];
+
+        $orderbyColumn = $order[0]['column'];
+        $orderbyDir    = $order[0]['dir'];
+
+        $sql = "
+                DECLARE @FirstRow INT, @LastRow INT
+                    SELECT  @FirstRow   = ((({$_REQUEST['start']}+1) - 1)) + 1,
+                            @LastRow    = ((({$_REQUEST['start']}+1) - 1)) + {$_REQUEST['length']};
+                    WITH glossaryEmail AS
+                    (
+
+                        select id,verbete,glossario,
+                            row_number() OVER (ORDER BY {$this->getFilterGlossary($orderbyColumn)} {$orderbyDir}) AS RowNumber,
+                               COUNT(*) OVER () AS TotalRecords
+                        FROM glossary_email
+                        where 1=1  ";
+
+        if(isset($_REQUEST['verbete']) && !empty($_REQUEST['verbete'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['verbete'],'verbete',true);
+        }
+
+        if(isset($_REQUEST['glossario']) && !empty($_REQUEST['glossario'])){
+            $sql.= $relatorioModel->montaWhereSingular($_REQUEST['glossario'],'glossario',true);
+        }
+
+        $sql.=")
+                SELECT * , (SELECT COUNT(*) FROM glossaryEmail) AS TotalRecords
+                        FROM glossaryEmail
+                        WHERE RowNumber BETWEEN @FirstRow AND @LastRow
+                        ORDER BY RowNumber ASC";
+
+//        print_r($sql);
+        $query = $this->getEntityManagerHth()->getConnection()->prepare($sql);
+        $query->execute();
+
+        $result = $query->fetchAll();
+
+        $records = array();
+        $records["data"] = array();
+
+        foreach($result as $row){
+            $records["data"][] = array(
+                $row['id'],
+                $row['verbete'],
+                $relatorioModel->limitarTexto($row['glossario'],$row['id']),
+//                $row['ativo'],
+                "<a href='{$this->url()->fromRoute('relatorio',array('action'=>'edita-glossary','id'=>$row['id']))}' class='btn green'> Editar </a>",
+            );
+        }
+
+
+        if (isset($_REQUEST["customActionType"]) && $_REQUEST["customActionType"] == "group_action") {
+            $records["customActionStatus"] = "OK"; // pass custom message(useful for getting status of group actions)
+            $records["customActionMessage"] = "Group action successfully has been completed. Well done!"; // pass custom message(useful for getting status of group actions)
+        }
+
+        $records["draw"] = $sEcho;
+        $records["recordsTotal"] = $iTotalRecords;
+        $records["recordsFiltered"] = $iTotalRecords;
+        $records["totalContatos"] = count($result);
+
+        return new JsonModel($records);
+    }
+
+    public function addGlossaryAction()
+    {
+        $request = $this->getRequest();
+        $form = '';
+
+        if($request->isPost()){
+            $data = $request->getPost();
+            $form->setData($data);
+            if($form->isValid()){
+
+            }
+        }
+
+        return new ViewModel(array('form'=>$form));
+    }
+
+
+    public function editaGlossaryAction()
+    {
+        $id = $this->params()->fromRoute('id',0);
+        $request = $this->getRequest();
+        $form = new GlossaryForm();
+        $success = null;
+        $relatorioModel = new RelatorioModel($this->getEntityManagerHth());
+        $populateValues = $relatorioModel->setGlossary($id)->populateGlossary();
+        if(!empty($populateValues))
+            $form->populateValues($populateValues);
+
+        if($request->isPost()){
+            $data = $request->getPost();
+            $form->setData($data);
+            if($form->isValid()){
+
+                $success = "Glossario editado com sucesso";
+            }
+        }
+
+        return new ViewModel(array('form'=>$form,'success'=>$success));
+    }
+
+    public function getGlossaryAction()
+    {
+        $id = $this->params()->fromRoute('id',0);
+        $relatorioModel = new RelatorioModel($this->getEntityManagerHth());
+        $glossary = $relatorioModel->setGlossary($id)->getGlossary();
+
+        if(!empty($glossary))
+            $glossary = $glossary->glossario;
+        else
+            $glossary = null;
+
+        return new JsonModel(array('glossario' => $glossary));
+
+    }
+
+    protected function getFilterGlossary($idColumn){
+
+        $filter = array(1=>'verbete',
+                        2=>'glossario');
+
+        return $filter[$idColumn];
+
     }
 
 
@@ -1393,8 +1767,6 @@ class RelatorioController extends AbstractAppController
         return $result;
 
     }
-
-
 
 
 }

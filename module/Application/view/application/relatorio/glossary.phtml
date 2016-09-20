@@ -43,13 +43,13 @@
 	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 		<div class="dashboard-stat blue">
 			<div class="visual">
-				<i class="fa fa-tasks"></i>
+				<i class="fa fa-comments"></i>
 			</div>
 			<div class="details">
 				<div class="number">
 					<span data-counter="counterup" data-value="0" id="manifestacoes-total">0</span>
 				</div>
-				<div class="desc">Eventos</div>
+				<div class="desc">Glossary</div>
 			</div>
 			<a class="more" href="javascript:;">
 				&nbsp;&nbsp;
@@ -66,7 +66,7 @@
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-settings font-dark"></i>
-					<span class="caption-subject font-dark sbold uppercase">Eventos Pendentes</span>
+					<span class="caption-subject font-dark sbold uppercase">Glossary</span>
 				</div>
 				<div class="actions">
 					<div class="btn-group">
@@ -83,56 +83,26 @@
 						<thead>
 						<tr role="row" class="heading">
 							<th> # </th>
-							<th> Depto Destino </th>
-							<th> Agente Destino</th>
-							<th> Evento</th>
-							<th> Data mais antiga</th>
-							<th> Qtde</th>
+							<th> Verbete </th>
+							<th> Glossario</th>
 							<th> Ações</th>
 						</tr>
 						<tr role="row" class="filter">
 							<td>
-
 							</td>
 							<td>
-								<select class="form-control form-filter input-sm" multiple="true" data-placeholder="Selecionar" name="depto_to[]">
-									<option></option>
-									<?php foreach($deptoTo as $values):?>
-										<option value="<?php echo $values['depto_to']?>"><?php echo $values['depto_to']?></option>
-									<?php endforeach;?>
-								</select>
+								<input type="text"  class="form-control form-filter input-sm" placeholder="Verbete" name="verbete">
 							</td>
 							<td>
-								<select class="form-control form-filter input-sm" multiple="true" data-placeholder="Selecionar" name="nome_agente_from[]">
-									<option></option>
-									<?php foreach($agtTo as $values):?>
-										<option value="<?php echo $values['agente_to']?>"><?php echo $values['agente_to']?></option>
-									<?php endforeach;?>
-								</select>
-							</td>
-							<td>
-								<select class="form-control form-filter input-sm" multiple="true" data-placeholder="Selecionar" name="evento[]">
-									<option></option>
-									<?php foreach($evento as $values):?>
-										<option value="<?php echo $values['evento']?>"><?php echo $values['evento']?></option>
-									<?php endforeach;?>
-								</select>
-							</td>
-							<td>
-
-							</td>
-							<td>
-
+								<input type="text"  class="form-control form-filter input-sm" placeholder="Glossario" name="glossario">
 							</td>
 							<td>
 								<div class="margin-bottom-5">
 									<button class="btn btn-sm green btn-outline filter-submit margin-bottom" id="submit-filter">
-										<i class="fa fa-search"></i> Search
-									</button>
+										<i class="fa fa-search"></i> Pesquisar</button>
 								</div>
 								<button class="btn btn-sm red btn-outline filter-cancel">
-									<i class="fa fa-times"></i> Reset
-								</button>
+									<i class="fa fa-times"></i> Resetar Campos</button>
 
 							</td>
 
@@ -151,7 +121,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-				<h4 class="modal-title">Orientação</h4>
+				<h4 class="modal-title">Glossario</h4>
 			</div>
 			<div class="modal-body">
 				<p id="id-text">
@@ -173,14 +143,13 @@
 		element2.val(element1.val());
 	}
 
-	function showModal(idProtocolo){
+	function showModal(idGlossart){
 
 		$.ajax({
-			url:'<?php echo $this->url('relatorio',array('action'=>'get-orientacao'))?>',
+			url:'<?php echo $this->url('relatorio',array('action'=>'get-glossary'))?>/'+idGlossart,
 			type:'POST',
-			data:'idProtocolo='+idProtocolo,
 			success:function (result) {
-				$('#id-text').text(result.orientacao);
+				$('#id-text').text(result.glossario);
 				$('#basic').modal();
 			}
 		})
@@ -236,12 +205,12 @@
 					],
 					"pageLength": 10, // default record count per page
 					"ajax": {
-						"url": "<?php echo $this->basePath('relatorio/list-evento-pendente'); ?>", // ajax source
+						"url": "<?php echo $this->basePath('relatorio/list-glossary'); ?>", // ajax source
 					},
 					"order": [
 						[1, "asc"]
 					],// set first column as a default sort by asc
-					columnDefs: [ { orderable: false, targets: [0] }, ],
+					columnDefs: [ { orderable: false, targets: [0] },{ orderable: false,targets: [2,3]}, ],
 				}
 			});
 
@@ -288,13 +257,10 @@
 
 	}();
 
-		jQuery(document).ready(function() {
-			TableDatatablesAjax.init();
-			$('select').chosen({
-				no_results_text: "Oops, Não encontramos nada!"
-			});
-			$('select[name="datatable_ajax_length"').chosen('destroy');
-		});
+	jQuery(document).ready(function() {
+		TableDatatablesAjax.init();
+
+	});
 
 </script>
 

@@ -85,31 +85,73 @@ class manifestacao extends AbstractHelper
         return $return;
     }
 
-    public function createArrayGraphicEnt($mes = '07', $ano = 2016 )
+    public function createArrayGraphicEnt($options)
     {
-        $totalDia = cal_days_in_month(CAL_GREGORIAN, $mes, $ano);
-        $dias = null;
-        for($i=1;$i<=$totalDia;$i++){
-            $dias.=$i.",";
+        $dates = null;
+        setlocale(LC_ALL, 'pt_BR');
+        switch($options['filtro']){
+            case 1:
+                $dates= "'".date('d/m')."',";
+                break;
+            case 2:
+                $rangeDate = $this->date_range(date('Y-m-d',strtotime('- 7 days')),date('Y-m-d'),'+1 day', $output_format = 'd/M');
+                foreach($rangeDate as $values){
+                    $dates.= "'".$values."',";
+                }
+                break;
+            case 3:
+
+                if(isset($options['qtde']) && $options['qtde'] > 1)
+                    $rangeDate = $this->date_range(date( "Y-m-d", strtotime( "-2 month" ) ),date('Y-m-d'),'+1 day', $output_format = 'd/M');
+                else
+                    $rangeDate = $this->date_range(date( "Y-m-d", strtotime( "-1 month" ) ),date('Y-m-d'),'+1 day', $output_format = 'd/M');
+
+                foreach($rangeDate as $values){
+                    $dates.= "'".$values."',";
+                }
+                break;
+            case 4:
+                $rangeDate = $this->date_range(date('Y-m-d',strtotime('- 1 year')),date('Y-m-d'),'+1 day', $output_format = 'd/M');
+                foreach($rangeDate as $values){
+                    $dates.= "'".$values."',";
+                }
+                break;
         }
-        return $dias;
+
+        return $dates;
     }
 
-    public function prepareArrayGraphicEnt($data,$mes=7,$ano=2016)
+    public function prepareArrayGraphicEnt($data,$options = array('filtro' => 2, 'dataIni' => '','dataFim' => ''))
     {
-        $totalDia = cal_days_in_month(CAL_GREGORIAN, $mes, $ano);
-        $dias = null;
-
-        for($i=1;$i<=$totalDia;$i++){
-            if($i<10)
-                $dates[$ano."-0".$mes."-"."0".$i] = 0;
-            else
-                $dates[$ano."-0".$mes."-".$i] = 0;
+        $options['dataIni'] = date('Y-m-d',strtotime('-1 day'));
+        $options['dataFim'] = date('Y-m-d');
+        switch($options['filtro']){
+            case 1:
+                $dates[date('Y-m-d')] = 0;
+            break;
+            case 2:
+                $rangeDate = $this->date_range(date('Y-m-d',strtotime('- 7 days')),date('Y-m-d'));
+                foreach($rangeDate as $values){
+                    $dates[$values] = 0;
+                }
+            break;
+            case 3:
+                $rangeDate = $this->date_range(date( "Y-m-d", strtotime( "-1 month" ) ),date('Y-m-d'));
+                foreach($rangeDate as $values){
+                    $dates[$values] = 0;
+                }
+            break;
+            case 4:
+                $rangeDate = $this->date_range(date('Y-m-d',strtotime('- 1 year')),date('Y-m-d'));
+                foreach($rangeDate as $values){
+                    $dates[$values] = 0;
+                }
+            break;
         }
 
         $result = null;
         foreach($data as $values){
-            $dates[$values['dia']]= $values['qtd'];
+            $dates[$values['dia']] = $values['qtd'];
         }
 
         foreach($dates as $key => $values){
@@ -117,6 +159,21 @@ class manifestacao extends AbstractHelper
         }
 
         return $result;
+    }
+
+    function date_range($first, $last, $step = '+1 day', $output_format = 'Y-m-d' ) {
+
+        $dates = array();
+        $current = strtotime($first);
+        $last = strtotime($last);
+
+        while( $current <= $last ) {
+
+            $dates[] = date($output_format, $current);
+            $current = strtotime($step, $current);
+        }
+
+        return $dates;
     }
 
 }

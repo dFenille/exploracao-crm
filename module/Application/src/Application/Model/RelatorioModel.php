@@ -18,6 +18,12 @@ class RelatorioModel
      * @var EntityManager
      */
     private $em;
+
+    public $cartaEmail;
+
+    public $glossary;
+
+
     public  function __construct(EntityManager $entityManager)
     {
         $this->em = $entityManager;
@@ -349,7 +355,7 @@ class RelatorioModel
         $sql = "SELECT distinct(canal_entrada_descr) as canal
                         FROM v_contato
                         WHERE dt_coleta between '2016-07-01' and '2016-07-30'
-                        and canal_entrada_descr NOT IN ('INSCRICAO CURSO(SITE)')";
+                        and canal_entrada_descr NOT IN ('INSCRICAO CURSO(SITE)','FALE CONOSCO PACE','FORM CURSOS' )";
         $query = $this->em->getConnection()->prepare($sql);
         $query->execute();
         $result = $query->fetchAll();
@@ -357,17 +363,55 @@ class RelatorioModel
         return $result;
     }
 
-    public function getValoresGraficoEnt($canal)
+    public function getValoresGraficoEnt($canal,$options = array('filtro' => 3 , 'qtde' => 1))
     {
-          $sql = "SELECT canal_entrada_descr as canal,
-                        convert(varchar(10),dt_coleta,120) as dia,
-                        count(*) AS qtd
-                        FROM v_contato
-                        WHERE dt_coleta between '2016-07-01' and '2016-07-30'
-                    and canal_entrada_descr = '{$canal}'
-                    and canal_entrada_descr NOT IN ('INSCRICAO CURSO(SITE)')
-                        GROUP BY canal_entrada_descr, convert(varchar(10),dt_coleta,120)
-                        order by canal_entrada_descr, convert(varchar(10),dt_coleta,120)";
+
+      $sql = "SELECT canal_entrada_descr as canal,
+                    convert(varchar(10),dt_coleta,120) as dia,
+                    count(*) AS qtd
+                    FROM v_contato";
+
+        if($options['filtro'] == 1){
+            $date = date('Y-m-d');
+
+            $sql.=" WHERE cast(dt_coleta as datetime) >= '{$date} 00:00:00' AND cast(dt_coleta as datetime) <= '{$date} 23:59:59'";
+        }
+
+        if($options['filtro'] == 2){
+            $date = date('Y-m-d',strtotime( "+1 day"));
+            $startDate = date('Y-m-d',strtotime("-7 days"));
+            $sql.=" WHERE cast(dt_coleta  as datetime) >= '{$startDate}' and cast(dt_coleta  as datetime) <= '{$date}'";
+        }
+
+        if($options['filtro'] == 3){
+
+            $date = date('Y-m-d',strtotime( "+1 day"));
+            if($options['qtde'] == 1)
+                $startDate = date( "Y-m-d", strtotime( "-1 month" ) );
+            else
+                $startDate = date( "Y-m-d", strtotime( "-2 month" ) );
+
+            $sql.=" WHERE cast(dt_coleta  as datetime) >= '{$startDate}' and cast(dt_coleta  as datetime) <= '{$date}'";
+        }
+
+        if($options['filtro'] == 4){
+            $date = date('Y-m-d',strtotime( "+1 day"));
+
+            if($options['qtde'] == 1)
+                $startDate = date( "Y-m-d", strtotime( "-1 year"));
+            else
+                $startDate = date( "Y-m-d", strtotime( "-3 year"));
+
+            $sql.=" WHERE cast(dt_coleta  as datetime) >= '{$startDate}' and cast(dt_coleta  as datetime) <= '{$date}'";
+        }
+
+        $sql.=" and canal_entrada_descr = '{$canal}'
+                and canal_entrada_descr NOT IN ('INSCRICAO CURSO(SITE)')
+                    GROUP BY canal_entrada_descr, convert(varchar(10),dt_coleta,120)
+                    order by canal_entrada_descr, convert(varchar(10),dt_coleta,120)";
+
+
+
         $query = $this->em->getConnection()->prepare($sql);
         $query->execute();
         $result = $query->fetchAll();
@@ -401,4 +445,128 @@ class RelatorioModel
             return $texto;
         }
     }
+
+    public function setCartaEmail($id)
+    {
+        $sql = "SELECT * FROM cartas_email WHERE id = {$id}";
+
+        $query = $this->em->getConnection()->prepare($sql);
+        $query->execute();
+        $result = $query->fetchAll();
+
+        $this->cartaEmail = new \stdClass();
+
+        foreach($result[0]  as $key => $values){
+            $this->cartaEmail->$key = $values;
+        }
+
+        return $this;
+    }
+
+    public function getCartaEmail()
+    {
+        if(!$this->cartaEmail)
+            return null;
+
+        return $this->cartaEmail;
+    }
+
+    public function populateCartaEmail()
+    {
+        $populateValues= array();
+
+        if(!empty($this->cartaEmail)){
+            foreach($this->cartaEmail as $key => $values){
+                $populateValues[$key] = $values;
+            }
+        }
+
+        return $populateValues;
+
+    }
+
+
+    public function addCartaEmail($post)
+    {
+        $date = date('Y-m-d H:i:s');
+        $sql = "INSERT INTO cartas_email
+                  (carta,descr,modelo,dt_atu)
+                VALUES
+                  ('{$post['carta']}','{$post['descr']}','{$post['modelo']}','{$date}')";
+
+        $this->em->getConnection()->beginTransaction();
+        try{
+            $query = $this->em->getConnection()->prepare($sql);
+            $query->execute();
+            $this->em->getConnection()->commit();
+        }catch(\Exception $e){
+            $this->em->getConnection()->rollBack();
+            throw new \Exception('Não foi possível adicionar Carta Email:'.$e->getMessage());
+         }
+
+        return $this;
+    }
+
+    public function updateCartaEmail($post,$id)
+    {
+        $date = date('Y-m-d H:i:s');
+        $sql = "UPDATE cartas_email
+                        SET   carta =  '{$post['carta']}'
+                              ,descr  = '{$post['descr']}'
+                              ,modelo = '{$post['modelo']}'
+                              ,dt_atu = '{$date}'
+                WHERE id = {$id}";
+
+        $this->em->getConnection()->beginTransaction();
+        try{
+            $query = $this->em->getConnection()->prepare($sql);
+            $query->execute();
+            $this->em->getConnection()->commit();
+        }catch(\Exception $e){
+            $this->em->getConnection()->rollBack();
+            throw new \Exception('Não foi possível adicionar Carta Email:'.$e->getMessage());
+        }
+        return $this;
+    }
+
+
+    public function setGlossary($id)
+    {
+        $sql = "SELECT * FROM glossary_email WHERE id = {$id}";
+
+        $query = $this->em->getConnection()->prepare($sql);
+        $query->execute();
+        $result = $query->fetchAll();
+
+        $this->glossary = new \stdClass();
+
+        foreach($result[0]  as $key => $values){
+            $this->glossary->$key = $values;
+        }
+
+        return $this;
+    }
+
+    public function getGlossary()
+    {
+        if(!$this->glossary)
+            return null;
+
+        return $this->glossary;
+    }
+
+    public function populateGlossary()
+    {
+        $populateValues= array();
+
+        if(!empty($this->glossary)){
+            foreach($this->glossary as $key => $values){
+                $populateValues[$key] = $values;
+            }
+        }
+
+        return $populateValues;
+
+    }
+
 }

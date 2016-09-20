@@ -5,33 +5,26 @@ namespace Application\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Mencao
+ * MencaoBkp
  *
- * @ORM\Table(name="mencao", indexes={@ORM\Index(name="parent_id", columns={"parent_id"}), @ORM\Index(name="id_mention", columns={"id_mention"}), @ORM\Index(name="sentimento", columns={"sentimento"}), @ORM\Index(name="dt_envio", columns={"dt_envio"}), @ORM\Index(name="tipo_captura", columns={"tipo_captura"})})
+ * @ORM\Table(name="mencao_bkp")
  * @ORM\Entity
  */
-class Mencao
+class MencaoBkp
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id_mencao", type="bigint", nullable=false)
+     * @ORM\Column(name="id_mencao_aux", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idMencao;
+    private $idMencaoAux;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="id_mention", type="bigint", nullable=false)
-     */
-    private $idMention;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id_monitoring", type="integer", nullable=true)
+     * @ORM\Column(name="id_monitoring", type="integer", nullable=false)
      */
     private $idMonitoring;
 
@@ -101,9 +94,9 @@ class Mencao
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dt_process", type="datetime", nullable=true)
+     * @ORM\Column(name="dt_proccess", type="datetime", nullable=true)
      */
-    private $dtProcess;
+    private $dtProccess;
 
     /**
      * @var integer
@@ -111,20 +104,6 @@ class Mencao
      * @ORM\Column(name="cod_mens", type="integer", nullable=true)
      */
     private $codMens;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dt_insert", type="datetime", nullable=false)
-     */
-    private $dtInsert = 'CURRENT_TIMESTAMP';
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dt_update", type="datetime", nullable=true)
-     */
-    private $dtUpdate;
 
 
 }

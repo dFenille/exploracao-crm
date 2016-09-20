@@ -31,15 +31,17 @@ class GetInfoController extends AbstractAppController
         $time       = time();
         $finish     = false;
         
-        $dateStart  = isset($data['dataInicio'])?$data['dataInicio']:date('Y-m-d', strtotime('-1 day'));
-        $dateEnd    = isset($data['dataFim'])?$data['dataFim']:date('Y-m-d', strtotime('-1 day'));
+        $dateStart  = isset($data['dataInicio'])?$data['dataInicio']:date('Y-m-d', strtotime('-7 day'))." 00:00:00";
+        $dateEnd    = isset($data['dataFim'])?$data['dataFim']:date('Y-m-d', strtotime('-7 day'))." 23:59:59";
         
-        
+
+
         /** PARAMETROS 123**/
         $result.="publickey=".PUBLIC_KEY."&signature=".md5($time.PRIVATE_KEY)."&time=".$time;
 //      $result.='&published_date='.date('Y-m-d')."%2000:00:00|".date('Y-m-d')."%2023:59:59";
         $result.='&published_date='.str_replace(' ','%20',$dateStart)."|".str_replace(' ','%20',$dateEnd);
         $result.="&ipp=100&page=".$page;
+
         $returnData = $scupModel->getMetions(array('idMonitoring' => $data['idMonitoring'],'sync' => true),$result);
         
 
@@ -62,10 +64,10 @@ class GetInfoController extends AbstractAppController
                     $finish = false;
                 }
             }
-        }else{
-            $return = "teste";
         }
-        
+
+        $this->getPublicacaoTwitter($dateStart, $dateEnd);
+
         return new JsonModel(array('result'=>$return,'totalPaginas' => $page - 1 ));
     }
     
@@ -145,8 +147,8 @@ class GetInfoController extends AbstractAppController
         $request = $this->getRequest();
         $data = $request->getQuery();
 
-        $dateStart  = isset($data['dataInicio'])?$data['dataInicio']:date('Y-m-d', strtotime('-1 day'));
-        $dateEnd    = isset($data['dataFim'])?$data['dataFim']:date('Y-m-d', strtotime('-1 day'));
+        $dateStart  = isset($data['dataInicio'])?$data['dataInicio']:date('Y-m-d', strtotime('-7 day'));
+        $dateEnd    = isset($data['dataFim'])?$data['dataFim']:date('Y-m-d', strtotime('-7 day'));
 
 
         
@@ -192,6 +194,59 @@ class GetInfoController extends AbstractAppController
         
     }
 
+
+    protected function getPublicacaoTwitter($dateStart,$dateEnd)
+    {
+        define('CONSUMER_KEY','48S7BBmDSWi885XuLTxFRkqus');
+        define('CONSUMER_SECRET','uX3KHaETs3un96MDVJn92X2zhkA2CCagAngyoEmCuuEIyDT0kj');
+        define('CONSUMER_TOKEN','231656611-ukKUxbTrnP4vqHaf4UWhdifTZvVEnwqma4Z7mrbB');
+        define('CONSUMER_TOKEN_SECRET','g3vHLr4YR9g9ZXrkcKDiMiKAw9todjYfcULIfBnIRWyxl');
+        $request = $this->getRequest();
+        $data = $request->getQuery();
+
+        $dateStart  = !empty($dateStart)?$dateStart:date('Y-m-d', strtotime('-7 day'))." 00:00:00";
+        $dateEnd    = !empty($dateEnd)?$dateEnd:date('Y-m-d', strtotime('-7 day'))." 23:59:59";
+
+        $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET,CONSUMER_TOKEN,CONSUMER_TOKEN_SECRET);
+        $content = $connection->get("account/verify_credentials");
+        $request_token = $connection->oauth('oauth/request_token');
+
+        $sessionTwitter = new \Zend\Session\Container('twitter');
+        $sessionTwitter->oauth_token         = $request_token['oauth_token'];
+        $sessionTwitter->oauth_token_secret  = $request_token['oauth_token_secret'];
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('mencao')
+            ->from('Application\Entity\Mencao', 'mencao')
+//                 ->where("mencao.tipoCaptura = 'twitterstream' and mencao.dtEnvio >= '2016-07-02 00:00:00' and mencao.dtEnvio <= '2016-07-02 23:59:59'");
+            ->where("mencao.tipoCaptura = 'twitterstream' and mencao.dtEnvio >= '{$dateStart}' and mencao.dtEnvio <= '{$dateEnd}' ");
+
+        $result = $query->getQuery()->getResult();
+        if(!empty($result)){
+            foreach($result as $values){
+                $explodeLink = explode('/', $values->getPermalink());
+                $id = array_reverse($explodeLink);
+                $statuses = $connection->get("statuses/show", array('id' => $id[0]));
+                if(isset($statuses->text) && !empty($statuses->text)){
+                    $this->getEntityManager()->getConnection()->beginTransaction();
+                    try{
+                        $values->setMensagem($statuses->text);
+                        $this->getEntityManager()->persist($values);
+                        $this->getEntityManager()->flush();
+                        $this->getEntityManager()->getConnection()->commit();
+                    }catch (\Exception $e){
+                        $this->getEntityManager()->getConnection()->rollBack();
+                    }
+                }
+            }
+            $result = 'Mensagens do Twitter atualizadas';
+        }else{
+            $result = 'Mensagens do Twitter não foram atualizadas';
+        }
+
+        return new JsonModel(array('result'=> $result));
+
+    }
 
 
     

@@ -1,65 +1,234 @@
+
+<link href="<?php echo $this->basePath('assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css')?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo $this->basePath('assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')?>" rel="stylesheet" type="text/css" />
+
+<script src="<?php echo $this->basePath('assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js')?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/global/plugins/bootstrap-daterangepicker/moment.min.js')?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js')?>" type="text/javascript"></script>
+
+<script src="<?php echo $this->basePath('assets/global/plugins/morris/morris.min.js');?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/global/plugins/morris/raphael-min.js');?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/global/plugins/bootstrap/js/bootstrap.min.js');?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/global/plugins/js.cookie.min.js" type="text/javascript');?>"></script>
+<script src="<?php echo $this->basePath('assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js');?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js');?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/global/plugins/jquery.blockui.min.js" type="text/javascript');?>"></script>
+<script src="<?php echo $this->basePath('assets/global/plugins/uniform/jquery.uniform.min.js');?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js');?>" type="text/javascript"></script>
+<!-- END CORE PLUGINS -->
+<script src="<?php echo $this->basePath('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js');?>" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN THEME GLOBAL SCRIPTS -->
+<script src="<?php echo $this->basePath('assets/global/scripts/app.min.js');?>" type="text/javascript"></script>
+<!-- END THEME GLOBAL SCRIPTS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+
+
+<script src="<?php echo $this->basePath('assets/pages/scripts/dashboard.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo $this->basePath('assets/pages/scripts/components-date-time-pickers.min.js')?>" type="text/javascript"></script>
+
+
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js"></script>
+
+<div class="row">
+    <div class="col-md-12">
+    <div class="portlet light portlet-fit portlet-datatable bordered">
+    			<div class="portlet-title">
+    				<div class="caption">
+    					<i class="icon-settings font-dark"></i>
+    					<span class="caption-subject font-dark sbold uppercase">Entrada de Contatos</span>
+    				</div>
+    				<div class="actions">
+    					<div class="btn-group">
+    						<a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown" aria-expanded="false">
+    							<i class="fa fa-share"></i>
+    							<span class="hidden-xs"> Exportar CSV </span>
+    						</a>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="portlet-body">
+                    <div class="row hidden">
+                        <div class="col-md-2">
+                            <div class="input-group date date-picker margin-bottom-5" data-date-format="dd/mm/yyyy">
+                                <input type="text" class="form-control form-filter input-sm" onchange="passaValorHidden($(this),$('#data-ini'))" readonly="" name="order_date_from" placeholder="Data Inicial" value="01/07/2016">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-sm default" type="button">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group date date-picker" data-date-format="dd/mm/yyyy">
+                                <input type="text" class="form-control form-filter input-sm" readonly=""  onchange="passaValorHidden($(this),$('#data-fim'))" name="order_date_to" placeholder="Data Final" value="31/07/2016">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-sm default" type="button">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select multiple='true' data-placeholder="Selecionar">
+                                <option> Selecionar </option>
+                                <?php foreach($indiceGrafico as $value):?>
+                                    <?php if($value['canal'] != 'INSCRIÇÃO CURSO(SITE)'): ?>
+                                        <option value="<?php echo $value['canal']?>"> <?php echo $value['canal']?></option>
+                                    <?php endif; ?>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-sm blue" type="button" onclick="$('#submit-filter').click();">OK</button>
+                        </div>
+				</div>
+				<div class="row">
+				    <div class="col-md-12">
+				        <div class="pull-right">
+				            <button type="button" class="btn green" onclick="diaGrafico()">
+				                1D
+				            </button>
+				            <button type="button" class="btn green" onclick="semanaGrafico()">
+                                1S
+                            </button>
+                            <button type="button" class="btn green" onclick="mesGrafico(1)">
+                                1M
+                            </button>
+                        </div>
+				    </div>
+			    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="grafico">
+    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <script>
+        $(function () {
+                $('#container').highcharts({
+                    chart: {
+                        type: 'area'
+                    },
+                    title: {
+                        text: ' '
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: [<?php  echo $this->manifestacao()->createArrayGraphicEnt(array('filtro' => 3,))?>],
+                        lineWidth: 0,
+                           minorGridLineWidth: 0,
+                           lineColor: 'transparent',
+                           labels: {
+                               enabled: false
+                           },
+                           minorTickLength: 0,
+                           tickLength: 0
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Qtd'
+                        },
+                        labels: {
+                            formatter: function () {
+                                return this.value ;
+                            }
+                        }
+                    },
+                    tooltip: {
+                        shared: true,
+                        valueSuffix: ' Qtd'
+                    },
+
+
+                    plotOptions: {
+                        area: {
+                            stacking: 'normal',
+                            lineColor: '#666666',
+                            lineWidth: 1,
+                            marker: {
+                                enabled: false,
+                                lineWidth: 1,
+                                lineColor: '#666666'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Area Comercial HTH',
+                        data: [<?php echo $this->manifestacao()->prepareArrayGraphicEnt($areaComercial,array('filtro' => 3,));?>]
+                    }, {
+                        name: 'Email Livre',
+                        data: [<?php echo $this->manifestacao()->prepareArrayGraphicEnt($emailLivre,array('filtro' => 3,));?>]
+                    }, {
+                        name: 'Fale Conosco',
+                        data: [<?php echo $this->manifestacao()->prepareArrayGraphicEnt($faleConosco,array('filtro' => 3,));?>]
+                    }, {
+                        name: 'Telefone',
+                        data: [<?php echo $this->manifestacao()->prepareArrayGraphicEnt($telefone,array('filtro' => 3,));?>]
+                    },]
+                });
+            });
+
+    </script>
+</div>
 
 <script>
-	$(function () {
-        $('#container').highcharts({
-            chart: {
-                type: 'area'
-            },
-            title: {
-                text: 'Entrada de Contato'
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: {
-                categories: [<?php  echo $this->manifestacao()->createArrayGraphicEnt()?>],
-                tickmarkPlacement: 'on',
-                title: {
-                    enabled: false
-                }
-            },
-            yAxis: {
-                title: {
-                    text: 'Qtd'
-                },
-                labels: {
-                    formatter: function () {
-                        return this.value ;
-                    }
-                }
-            },
-            tooltip: {
-                shared: true,
-                valueSuffix: ' Qtd'
-            },
-            plotOptions: {
-                area: {
-                    stacking: 'normal',
-                    lineColor: '#666666',
-                    lineWidth: 1,
-                    marker: {
-                        lineWidth: 1,
-                        lineColor: '#666666'
-                    }
-                }
-            },
-            series: [{
-                name: 'Area Comercial HTH',
-                data: [<?php echo $this->manifestacao()->prepareArrayGraphicEnt($areaComercial,7,2016);?>]
-            }, {
-                name: 'Email Livre',
-                data: [<?php echo $this->manifestacao()->prepareArrayGraphicEnt($emailLivre,7,2016);?>]
-            }, {
-                name: 'Fale Conosco',
-                data: [<?php echo $this->manifestacao()->prepareArrayGraphicEnt($faleConosco,7,2016);?>]
-            }, {
-                name: 'Telefone',
-                data: [<?php echo $this->manifestacao()->prepareArrayGraphicEnt($telefone,7,2016);?>]
-            },]
+    function diaGrafico(){
+		$.ajax({
+			url: '<?php echo $this->url('relatorio',array('action'=>'filtro-entrada-contato'));?>?filtro=1&qtde=1',
+			method:'GET',
+			success:function(result){
+					$('#grafico').html(result);
+			}
+		})
+
+	}
+	function semanaGrafico(){
+    		$.ajax({
+    			url: '<?php echo $this->url('relatorio',array('action'=>'filtro-entrada-contato'));?>?filtro=2&qtde=1',
+    			method:'GET',
+    			success:function(result){
+    					$('#grafico').html(result);
+    			}
+    		})
+
+    	}
+
+	 function mesGrafico(qtdeMes){
+    		$.ajax({
+    			url: '<?php echo $this->url('relatorio',array('action'=>'filtro-entrada-contato'));?>?filtro=3&qtde='+qtdeMes,
+    			method:'GET',
+    			success:function(result){
+    					$('#grafico').html(result);
+    			}
+    		})
+
+    }
+
+     function anoGrafico(qtdeAno){
+        $.ajax({
+            url: '<?php echo $this->url('relatorio',array('action'=>'filtro-entrada-contato'));?>?filtro=4&qtde='+qtdeAno,
+            method:'GET',
+            success:function(result){
+                    $('#grafico').html(result);
+            }
+        })
+
+    }
+
+    jQuery(document).ready(function() {
+        $('select').chosen({
+            no_results_text: "Oops, Não encontramos nada!"
         });
+
     });
 </script>
