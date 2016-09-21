@@ -15,52 +15,62 @@ use Zend\Session\Config\SessionConfig;
 use Zend\Session\SessionManager;
 use Zend\Session\Container;
 use Zend\Validator\AbstractValidator;
+use Zend\ModuleManager\Feature\ConsoleBannerProviderInterface;
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
+use Zend\Console\Adapter\AdapterInterface as Console;
 
-class Module
+class Module implements ConsoleBannerProviderInterface,
+    AutoloaderProviderInterface,
+    ConfigProviderInterface,
+    ConsoleUsageProviderInterface
 {
-    
+
     protected $sessionConfig = array(
         'remember_me_seconds' => 360,
         'use_cookies' => true,
-        'cookie_httponly' => true
+        'cookie_httponly' => true,
+        'name'  => 'exploracao-crm',
+
     );
-    
+
     protected $list = array(
-        
+
     );
-    
+
     public function onBootstrap(MvcEvent $e)
-    {   
+    {
         $this->initSession();
         $this->initLayout($e);
         $this->initTranslate($e);
         $this->initConstantes();
-        
+
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-        
+
         $list = $this->list;
         $auth = array();
-        
+
         $eventManager->attach(MvcEvent::EVENT_ROUTE, function ($e) use($list, $auth) {
             $match = $e->getRouteMatch();
-        
+
             // No route match, this is a 404
             if (! $match instanceof RouteMatch) {
                 return;
             }
-            
+
             // Route is whitelisted
             $route = $match->getMatchedRouteName();
             $params = $match->getParams();
             $module = explode('/',$route);
-        
-        
+
+
 //             if(@$module[0] == 'api' ||  $route == 'admin/day-notification' || $route == 'swagger-ui' || $route ==  'swagger-resource-detail' || $route ==  'swagger-resources'){
 //                 return;
 //             }
-        
+
         }, - 100);
     }
 
@@ -79,8 +89,8 @@ class Module
             ),
         );
     }
-    
-    
+
+
     public function getServiceConfig()
     {
         return array(
@@ -100,7 +110,7 @@ class Module
         $sessionManager->start();
         Container::setDefaultManager($sessionManager);
     }
-    
+
     public function initLayout($e)
     {
         $e->getApplication()->getEventManager()->getSharedManager()->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($e)
@@ -115,28 +125,36 @@ class Module
         }
         , 100);
     }
-    
+
     public function initTranslate($e)
     {
         $serviceManager = $e->getApplication()->getServiceManager();
         $translator = $serviceManager->get('MvcTranslator');
         $translator->addTranslationFile('phpArray','vendor/zendframework/zendframework/resources/languages/pt_BR/Zend_Validate.php');
-    
+
         AbstractValidator::setDefaultTranslator($translator);
     }
 
     public function initConstantes(){
-        
+
         define('PRIVATE_KEY','dHutz1gx');
         define('PUBLIC_KEY', 'RqxJQFHt');
 
-//         define('CONSUMER_KEY', getenv('48S7BBmDSWi885XuLTxFRkqus'));
-//         define('CONSUMER_SECRET', getenv('uX3KHaETs3un96MDVJn92X2zhkA2CCagAngyoEmCuuEIyDT0kj'));
-
-//         define('ACCESS_TOKEN', getenv('	231656611-ukKUxbTrnP4vqHaf4UWhdifTZvVEnwqma4Z7mrbB'));
-//         define('ACCESS_TOKEN_SECRET', getenv('g3vHLr4YR9g9ZXrkcKDiMiKAw9todjYfcULIfBnIRWyxl'));
-//         define('OAUTH_CALLBACK', getenv('TEST_OAUTH_CALLBACK'));
-
     }
-    
+
+    public function getConsoleBanner(Console $console)
+    {
+        return 'Scup 0.0.1';
+    }
+
+    public function getConsoleUsage(Console $console)
+    {
+        return array(
+            array( '--verbose' , 'Liga modo verbose' ),
+            array( '-v'        , 'Mesmo que --verbose' ),
+            array( '--idMonitoring'    , 'id de Monitoracao'),
+            array( '--data_ini'    , 'data inicial'),
+            array( '--data_fim'    , 'data final'),
+        );
+    }
 }

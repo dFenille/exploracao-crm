@@ -59,14 +59,14 @@ class Mencao
     /**
      * @var string
      *
-     * @ORM\Column(name="mensagem", type="text", length=16, nullable=true)
+     * @ORM\Column(name="mensagem", type="string", length=3000, nullable=true)
      */
     private $mensagem;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="sentimento", type="string", length=20, nullable=true)
+     * @ORM\Column(name="sentimento", type="string", length=50, nullable=true)
      */
     private $sentimento;
 
@@ -111,20 +111,6 @@ class Mencao
      * @ORM\Column(name="cod_mens", type="integer", nullable=true)
      */
     private $codMens;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dt_insert", type="datetime", nullable=false)
-     */
-    private $dtInsert = 'CURRENT_TIMESTAMP';
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dt_update", type="datetime", nullable=true)
-     */
-    private $dtUpdate;
 
 
 
@@ -448,53 +434,5 @@ class Mencao
     public function getCodMens()
     {
         return $this->codMens;
-    }
-
-    /**
-     * Set dtInsert
-     *
-     * @param \DateTime $dtInsert
-     *
-     * @return Mencao
-     */
-    public function setDtInsert($dtInsert)
-    {
-        $this->dtInsert = $dtInsert;
-
-        return $this;
-    }
-
-    /**
-     * Get dtInsert
-     *
-     * @return \DateTime
-     */
-    public function getDtInsert()
-    {
-        return $this->dtInsert;
-    }
-
-    /**
-     * Set dtUpdate
-     *
-     * @param \DateTime $dtUpdate
-     *
-     * @return Mencao
-     */
-    public function setDtUpdate($dtUpdate)
-    {
-        $this->dtUpdate = $dtUpdate;
-
-        return $this;
-    }
-
-    /**
-     * Get dtUpdate
-     *
-     * @return \DateTime
-     */
-    public function getDtUpdate()
-    {
-        return $this->dtUpdate;
     }
 }

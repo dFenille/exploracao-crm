@@ -99,6 +99,23 @@ return array(
             ),
         ),
     ),
+    'console' => array(
+        'router' => array(
+            'routes' => array(
+                'sincronizar' => array(
+                    'options' => array(
+                        'route'    => 'sincronizar [--verbose|-v] [<idMonitoring>] [--data_ini=] [--data_fim=]',
+                        'defaults' => array(
+                            '__NAMESPACE__' => 'Application\Controller',
+                            'controller' => 'Application\Controller\Index',
+                            'action'     => 'sincronizar',
+                        )
+                    )
+                ),
+
+            )
+        )
+    ),
     'doctrine' => array(
         'driver' => array(
             'application_entities' => array(
@@ -170,7 +187,7 @@ return array(
             'Application\Controller\GetInfo' => 'Application\Controller\GetInfoController',
             'Application\Controller\Scup' => 'Application\Controller\ScupController',
             'Application\Controller\Relatorio' => 'Application\Controller\RelatorioController',
-            
+
         ),
     ),
     'view_manager' => array(
@@ -196,12 +213,5 @@ return array(
             'mentions' => 'Application\View\Helper\mentions',
             'manifestacao' => 'Application\View\Helper\manifestacao',
         )
-    ),
-    // Placeholder for console routes
-    'console' => array(
-        'router' => array(
-            'routes' => array(
-            ),
-        ),
     ),
 );

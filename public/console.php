@@ -14,10 +14,4 @@ if (php_sapi_name() === 'cli-server' && is_file(__DIR__ . parse_url($_SERVER['RE
 require 'init_autoloader.php';
 
 // Run the application!
-$application = Zend\Mvc\Application::init(require 'config/application.config.php');
-$application->getRequest()->setBaseUrl('/exploracao-crm');
-$application->run();
-
-function __($str){
-    return $str;
-}
+Zend\Mvc\Application::init(require 'config/application.config.php')->run();

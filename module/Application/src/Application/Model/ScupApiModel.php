@@ -30,7 +30,7 @@ class ScupApiModel {
     private $usuariosInstagram;
     
     /**
-     * @@var Mencao
+     * @param Mencao
      * */
     private $mention;
 
@@ -163,6 +163,7 @@ class ScupApiModel {
                      $result = false;
                      $this->entityManager->getConnection()->beginTransaction();
                      $mention = new Mencao();
+                     $mention->setDtEnvio(new \DateTime('now'));
                      $mention->setIdMention($values->mention->id);
                      $mention->setIdMonitoring($idMonitoring);
                      $mention->setDtEnvio(new \DateTime($values->mention->published_at));
@@ -170,7 +171,6 @@ class ScupApiModel {
                      $mention->setTipoCaptura($values->search->search_type_name);
                      $mention->setSentimento($values->mention->sentiment);
                      $mention->setPermalink($values->mention->content->permalink);
-                     $mention->setDtInsert(new \DateTime('now'));
                      
                         switch ($values->search->search_type_name){
                             case 'twitterstream':
@@ -234,97 +234,12 @@ class ScupApiModel {
                                 $this->addTagMention(array('action_id'=>$valuesTags->action_id, 'mention_id' => $values->mention->id));
                          }
                      }
-                 }else{
-                        $this->updateMention($values,$idMonitoring);
                  }
             }
          }
          
      }
-
-
-    public function updateMention($values,$idMonitoring)
-    {
-        $result = false;
-        $this->entityManager->getConnection()->beginTransaction();
-
-        $this->mention->setIdMention($values->mention->id)
-                        ->setIdMonitoring($idMonitoring)
-                        ->setDtEnvio(new \DateTime($values->mention->published_at))
-                        ->setDtColetaScup(new \DateTime($values->mention->collected_at))
-                        ->setTipoCaptura($values->search->search_type_name)
-                        ->setSentimento($values->mention->sentiment)
-                        ->setPermalink($values->mention->content->permalink)
-                        ->setDtUpdate(new \DateTime('now'));
-        ;
-
-        switch ($values->search->search_type_name){
-            case 'twitterstream':
-                $this->mention->setMensagem($values->mention->content->permalink);
-                break;
-            case 'facebookmessages':
-                $list = explode('PICTURE:', $values->mention->content->description);
-                $description = explode('LINK:', $list[0]);
-                $this->mention->setMensagem($description[0]);
-                break;
-            case 'facebookwall':
-                $list = explode('PICTURE:', $values->mention->content->description);
-                $description = explode('LINK:', $list[0]);
-                $this->mention->setMensagem($description[0]);
-                break;
-            case 'instagramtags':
-                $list = explode('PICTURE:', $values->mention->content->description);
-                $description = explode('LINK:', $list[0]);
-                $this->mention->setMensagem($description[0]);
-                break;
-        }
-
-        if(!empty($values->parent->id)){
-            $this->mention->setParentId($values->parent->id);
-        }
-
-        if(!empty($values->user->facebook_id)){
-            $userFacebook = $this->addUsuariosFacebook($values->user)->getUsuariosFacebook();
-            $this->mention->setIdUsuarioFacebook($userFacebook->getIdUsuariosFacebook());
-        }
-
-        if(!empty($values->user->instagram_id)){
-            $this->mention->setIdUsuarioInstagram($this->addUsuariosInstagram($values->user)->getUsuariosInstagram()->getIdUsuariosInstagram());
-        }
-
-        if(!empty($values->ticket->ticket_id)){
-            $this->addTickets(array('ticket_id'   => $values->ticket->ticket_id,
-                'assignee_id' => $values->ticket->assignee_id,
-                'status'      => $values->ticket->status,
-                'id_mention'  => $values->mention->id,
-            ));
-
-        }
-
-        try{
-            $this->entityManager->persist($this->mention);
-            $this->entityManager->flush();
-
-            $this->entityManager->getConnection()->commit();
-            $result = true;
-        }catch(\Exception $e){
-            $this->entityManager->getConnection()->rollBack();
-            throw new \Exception($e->getMessage());
-        }
-
-        $tags = $this->getTagsMention(array('idMonitoring'=>$idMonitoring), $values->mention->id);
-
-        if(!empty($tags) && isset($tags->data) && !isset($tags->data[0]->error_code) && $result == true){
-            foreach($tags->data as $valuesTags){
-                if(!empty($valuesTags->action_id))
-                    $this->addTagMention(array('action_id'=>$valuesTags->action_id, 'mention_id' => $values->mention->id));
-            }
-        }
-
-        return $this;
-    }
-
-
+     
      /***
       * @var int $idMention
       * @description seta a menção
